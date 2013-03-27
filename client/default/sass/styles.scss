@@ -1,0 +1,10 @@
+/*
+ * Main SASS file for application
+ *
+ * Command to watch & compile SASS changes:
+ * sass --watch client/default/sass/styles.scss:client/default/css/style.css
+ */
+
+
+@import "colors"; 	// default colors for app
+@import "general"; 	// default styles for app

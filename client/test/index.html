@@ -1,0 +1,44 @@
+<!--
+    - Prerequisits: (from 'test' directory)
+    - **************
+    - installed mocha-phantomjs : sudo npm install -g mocha-phantomjs
+    - create symbolic link to app: ln -s ../default default
+    - 
+    - To Run: cd client/test; mocha-phantomjs index.html
+ -->
+
+<html>
+    <head>
+        <meta charset="utf-8">
+    <link rel="stylesheet" href="./lib/mocha.css" />
+    </head>
+
+    <body>
+        <div id="mocha"></div>
+        <script src="./lib/mocha.js"></script>
+        <script src="./lib/chai.js"></script>
+
+        <script>
+            mocha.ui('bdd'); 
+            mocha.reporter('html');
+            expect = chai.expect;
+            assert = chai.assert;
+        </script>
+
+        <!-- Libs -->
+
+        <!-- Modules -->
+        <script src="default/app/models/Act.js"></script>
+
+
+        <!-- Tests -->
+        <script src="tests/firstTest.js"></script>
+
+
+        <script>
+            if (window.mochaPhantomJS) { mochaPhantomJS.run(); }
+            else { mocha.run(); }
+        </script>
+        
+    </body>
+</html>

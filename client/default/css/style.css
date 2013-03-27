@@ -1,0 +1,15 @@
+/*
+ * Main SASS file for application
+ *
+ * Command to watch & compile SASS changes:
+ * sass --watch client/default/sass/styles.scss:client/default/css/style.css
+ */
+/*
+ * Main Colours used in App
+ */
+/*
+ * Default styles for app
+ */
+body {
+  color: black;
+  background-color: #cdcdcd; }
