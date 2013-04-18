@@ -3,6 +3,25 @@
  */
 
 body {
-	color			: $mainFont;
-	background-color: $mainBG;
+	color			: $mainFontColor;
+	background-color: $mainBgColor;
+}
+
+h1 {
+	color: $mainHeadingColor;
+}
+
+li {
+	list-style-type: none;
+}
+
+.btn {
+    border-radius: 5px;
+    border: 1px solid black;
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.15);
+    height: 30px;
+    margin: 20px;
+    color: white;
+    padding: 5px 10px 5px 10px;
+    @include button-gradient(#000000, $appColor2);
 }

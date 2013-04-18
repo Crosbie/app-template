@@ -1,3 +1,3 @@
-exports.ping = function(params, cb){
-	return cb(true);
+exports.getConfig = function(params, cb){
+	return cb({config: 'true'});
 }

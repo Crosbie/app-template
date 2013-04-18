@@ -6,6 +6,14 @@
  */
 /*
  * Main Colours used in App
+ *
+ * use variable names for css colors in
+ * order to keep color scheme consistent throughout app
+ */
+/*
+ *  Reusable styles for the app
+ *
+ * Easily apply background gradients etc.
  */
 /*
  * Default styles for app
@@ -13,3 +21,25 @@
 body {
   color: black;
   background-color: #cdcdcd; }
+
+h1 {
+  color: #3299cc; }
+
+li {
+  list-style-type: none; }
+
+.btn {
+  border-radius: 5px;
+  border: 1px solid black;
+  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.15);
+  height: 30px;
+  margin: 20px;
+  color: white;
+  padding: 5px 10px 5px 10px;
+  background-image: linear-gradient(bottom, black 0%, red 85%);
+  background-image: -webkit-linear-gradient(bottom, black 0%, red 85%);
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, black), color-stop(0.85, red)); }
+  .btn:active {
+    background-image: linear-gradient(bottom, red 0%, black 85%);
+    background-image: -webkit-linear-gradient(bottom, red 0%, black 85%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, red), color-stop(0.85, black)); }

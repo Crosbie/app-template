@@ -1,0 +1,43 @@
+/*
+ *  Reusable styles for the app
+ *
+ * Easily apply background gradients etc.
+ */
+
+
+ @mixin background-gradient ($bottom, $top) {
+    background-image: linear-gradient(bottom, $bottom 0%, $top 85%);
+    background-image: -webkit-linear-gradient(bottom, $bottom 0%, $top 85%);
+    background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0, $bottom),
+        color-stop(0.85, $top)
+    );
+}
+
+// gradient for buttons, that will invert gradient on clicking button
+@mixin button-gradient ($bottom, $top) {
+    background-image: linear-gradient(bottom, $bottom 0%, $top 85%);
+    background-image: -webkit-linear-gradient(bottom, $bottom 0%, $top 85%);
+    background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0, $bottom),
+        color-stop(0.85, $top)
+    );
+
+    &:active {
+        background-image: linear-gradient(bottom, $top 0%, $bottom 85%);
+        background-image: -webkit-linear-gradient(bottom, $top 0%, $bottom 85%);
+        background-image: -webkit-gradient(
+            linear,
+            left bottom,
+            left top,
+            color-stop(0, $top),
+            color-stop(0.85, $bottom)
+        );
+    }
+}

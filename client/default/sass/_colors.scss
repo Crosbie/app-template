@@ -1,9 +1,25 @@
 /*
  * Main Colours used in App
+ *
+ * use variable names for css colors in
+ * order to keep color scheme consistent throughout app
  */
 
 
+//------ App Font Colors ------
+
+// main heading color - blue
+$mainHeadingColor : #3299CC;
 // main body font - black
-$mainFont 	: #000000;
+$mainFontColor	: #000000;
 // outer background color - grey
-$mainBG 	: #cdcdcd;
+$mainBgColor 	: #cdcdcd;
+
+
+//------ App Color Scheme --------
+
+// main app color - white
+$appColor1 : #ffffff;
+// secondary app color - red
+$appColor2 : #ff0000;
+

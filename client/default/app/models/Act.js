@@ -14,14 +14,14 @@ var actModule = (function(module) {
 	/*
 	 * Act Call Function
 	 *
-	 * @func String - act name
-	 * @params Obj 	- params object
-	 * @successFn function - success callback
-	 * @failFn function - failure callback
+	 * @func String 		- act name
+	 * @params Obj 			- params object
+	 * @successFn function 	- success callback
+	 * @failFn function 	- failure callback
 	 */
 	function call(func, params, successFn, failFn){
 		if(!func || !successFn || !failFn){
-			console.log('missing params')
+			console.log('missing act name or callbacks')
 			return false;
 		}
 
@@ -31,12 +31,8 @@ var actModule = (function(module) {
 			'act' : func,
 			'req' : params
 		}, function(res){
-
-			console.log('Act Success', res);
 			return successFn(res);
 		}, function(err, msg){
-
-			console.log('Act Fail', err);
 			return failFn(err, msg);
 		});
 	};
