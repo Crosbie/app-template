@@ -3,8 +3,10 @@
  */
 
 $(document).ready(function{
-	console.log('Loaded');
-
+	if(g_debug){
+		console.log('App Initialized');	
+	}
+	
 	uiInit();
 });
 
@@ -14,26 +16,11 @@ $(document).ready(function{
  * @param - pagesArray
  */
 function uiInit(pagesArray){
-	var initPages  	= ['login', 'home'];
-	var $content 	= $('#content');
-	var pagesToLoad = pagesArray || initPages;
-
-	for(var i=0 ; i<pagesToLoad.length; i++){
-		$content.html('');
-		$content.append(pagesToLoad[i]);
+	if(g_debug){
+		console.log('UI Initialized');	
 	}
-}
 
-$(document).ready(function() {
-	importViews(function() {
-		changeView("mainPage");
-		var mainPageView = getView("mainPage");
-		mainPageView.find("#info").html("Loading User Data....");
-		users.load(function() {
-			mainPageView.find("#info").html("User Data Loaded!");
-			mainPageView.find("#loginBtn").removeAttr("disabled");
-			mainPageView.find("#loginBtn").button("enable");
-		});
-		bindEvents();
-	});
-});
+	//TODO: Decide on best practice for init UI, without prescribing
+	// any single UI framework
+
+}

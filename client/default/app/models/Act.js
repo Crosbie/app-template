@@ -39,4 +39,21 @@ var actModule = (function(module) {
 
 	return module;
 
+	// Sample act call 
+/*
+	actModule.call("getConfig", {param1: true},
+		function(res){
+			console.log(res);
+		}, function(msg, err){
+			console.log("Act Error:", msg);
+		}
+	);
+*/
+
 })(actModule || {});
+
+
+
+
+
+
