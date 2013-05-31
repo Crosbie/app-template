@@ -3,12 +3,12 @@
  */
 
 body {
-	color			: $mainFontColor;
-	background-color: $mainBgColor;
+	color			: @mainFontColor;
+	background-color: @mainBgColor;
 }
 
 h1 {
-	color: $mainHeadingColor;
+	color: @mainHeadingColor;
 }
 
 li {
@@ -23,5 +23,9 @@ li {
     margin: 20px;
     color: white;
     padding: 5px 10px 5px 10px;
-    @include button-gradient(#000000, $appColor2);
+    .button-gradient(#000000, @appColor2);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }

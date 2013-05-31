@@ -1,0 +1,54 @@
+/*
+ * Mixins for CSS3 properties and various reusable styles for the app.
+ */
+
+
+.button-gradient (@bottom, @top) {
+    background-image: linear-gradient(bottom, @bottom 0%, @top 85%);
+    background-image: -webkit-linear-gradient(bottom, @bottom 0%, @top 85%);
+    background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0, @bottom),
+        color-stop(0.85, @top)
+    );
+
+    &:active {
+        background-image: linear-gradient(bottom, @top 0%, @bottom 85%);
+        background-image: -webkit-linear-gradient(bottom, @top 0%, @bottom 85%);
+        background-image: -webkit-gradient(
+            linear,
+            left bottom,
+            left top,
+            color-stop(0, @top),
+            color-stop(0.85, @bottom)
+        );
+    }
+}
+
+.background-gradient (@bottom, @top) {
+    background-image: linear-gradient(bottom, @bottom 0%, @top 85%);
+    background-image: -webkit-linear-gradient(bottom, @bottom 0%, @top 85%);
+    background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0, @bottom),
+        color-stop(0.85, @top)
+    );
+}
+
+.font1 (@size){
+    font: normal @size @font1;
+}
+.font1-bold (@size){
+    font: bold @size @font1;
+}
+
+.font2 (@size){
+    font: normal @size @font2;
+}
+.font2-bold (@size){
+    font: bold @size @font2;
+}

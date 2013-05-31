@@ -4,7 +4,7 @@
 	Module used to build the act calls used throughout the app
 --------------------*/
 
-var actModule = (function(module) {
+var Act = (function(module) {
 	//interface----------------------------------
 
 		module.call = call // make act call to cloud
@@ -41,7 +41,7 @@ var actModule = (function(module) {
 
 	// Sample act call 
 /*
-	actModule.call("getConfig", {param1: true},
+	Act.call("getConfig", {param1: true},
 		function(res){
 			console.log(res);
 		}, function(msg, err){
@@ -50,7 +50,7 @@ var actModule = (function(module) {
 	);
 */
 
-})(actModule || {});
+})(Act || {});
 
 
 

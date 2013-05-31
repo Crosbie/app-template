@@ -2,7 +2,7 @@
  * App Initialization
  */
 
-$(document).ready(function{
+$(document).ready(function(){
 	if(g_debug){
 		console.log('App Initialized');	
 	}
