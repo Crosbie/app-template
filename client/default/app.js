@@ -9,6 +9,7 @@ $(document).ready(function(){
 
 	uiInit();
 	initOriHandler(); // setup orientation handler if needed
+	overRide(); // run iOS or Android overrides
 });
 
 
