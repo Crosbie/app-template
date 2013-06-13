@@ -21,10 +21,10 @@
 // 	});
 
 $(".btn")
-	.bind("mousedown", function () {
+	.bind("touchstart", function () {
 		$(this).addClass("fake-active");
 	})
-	.bind("mouseup", function() {
+	.bind("touchend", function() {
 		$(this).removeClass("fake-active");
 	})
 	.bind("touchcancel", function() {
