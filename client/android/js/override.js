@@ -8,7 +8,7 @@
  * Handle ":active" selector not working
  * on Android webKit on 'li' elements
  */
-if (navigator.userAgent.toLowerCase().indexOf("android") > -1) {
+// if (navigator.userAgent.toLowerCase().indexOf("android") > -1) {
 	$(".btn")
 		.bind("touchstart", function () {
 			$(this).addClass("fake-active");
@@ -19,4 +19,4 @@ if (navigator.userAgent.toLowerCase().indexOf("android") > -1) {
 		.bind("touchcancel", function() {
 			$(this).removeClass("fake-active");
 		});
-}
+// }
