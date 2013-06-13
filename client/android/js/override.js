@@ -24,6 +24,7 @@ $(".btn")
 	.click(function () {
 		var self = this;
 		$(this).addClass("fake-active");
+		console.log('yo');
 		// setTimeout(function(){
 		// 	$(self).removeClass("fake-active");
 		// },100);
