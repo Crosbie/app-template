@@ -352,6 +352,16 @@ table {
  * Mixins for CSS3 properties and various reusable styles for the app.
  */
 /*
+ * Provide a bottom and top color for button gradients
+ * these colors will be inverted while the button is pressed
+ */
+/*
+ * Provide bottom and top colors for gradient
+ */
+/*
+ * Mixins for variations on app fonts
+ */
+/*
  * Default styles for app
  */
 body {
@@ -360,6 +370,7 @@ body {
 }
 h1 {
   color: #3299cc;
+  text-align: center;
 }
 li {
   list-style-type: none;
@@ -367,25 +378,66 @@ li {
 .btn {
   border-radius: 5px;
   border: 1px solid black;
-  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.15);
-  height: 30px;
+  box-shadow: 1px 1px 1px 0 rgba(255, 255, 255, 0.5);
+  text-shadow: 1px 1px #000000;
   margin: 20px;
-  color: white;
+  color: #ffffff;
   padding: 5px 10px 5px 10px;
-  background-image: linear-gradient(bottom, #000000 0%, #ff0000 85%);
-  background-image: -webkit-linear-gradient(bottom, #000000 0%, #ff0000 85%);
-  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #000000), color-stop(0.85, #ff0000));
+  background-image: linear-gradient(bottom, #015e7b 0%, #0198e1 85%);
+  background-image: -webkit-linear-gradient(bottom, #015e7b 0%, #0198e1 85%);
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #015e7b), color-stop(0.85, #0198e1));
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  text-align: center;
 }
 .btn:active {
-  background-image: linear-gradient(bottom, #ff0000 0%, #000000 85%);
-  background-image: -webkit-linear-gradient(bottom, #ff0000 0%, #000000 85%);
-  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ff0000), color-stop(0.85, #000000));
+  background-image: linear-gradient(bottom, #0198e1 0%, #015e7b 85%);
+  background-image: -webkit-linear-gradient(bottom, #0198e1 0%, #015e7b 85%);
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #0198e1), color-stop(0.85, #015e7b));
+}
+.btn.accept {
+  background-image: linear-gradient(bottom, #3a6016 0%, #61b329 85%);
+  background-image: -webkit-linear-gradient(bottom, #3a6016 0%, #61b329 85%);
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #3a6016), color-stop(0.85, #61b329));
+}
+.btn.accept:active {
+  background-image: linear-gradient(bottom, #61b329 0%, #3a6016 85%);
+  background-image: -webkit-linear-gradient(bottom, #61b329 0%, #3a6016 85%);
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #61b329), color-stop(0.85, #3a6016));
+}
+.btn.decline {
+  background-image: linear-gradient(bottom, #99000d 0%, #ff0000 85%);
+  background-image: -webkit-linear-gradient(bottom, #99000d 0%, #ff0000 85%);
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #99000d), color-stop(0.85, #ff0000));
+}
+.btn.decline:active {
+  background-image: linear-gradient(bottom, #ff0000 0%, #99000d 85%);
+  background-image: -webkit-linear-gradient(bottom, #ff0000 0%, #99000d 85%);
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ff0000), color-stop(0.85, #99000d));
+}
+.box {
+  background-color: #ffffff;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  box-shadow: 1px 1px 1px 0 #000000;
 }
 #content {
   display: block;
-  font: normal 22px Helvetica, Arial, sans-serif;
+  font: normal 22px "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
+#content h1 {
+  font: bold 30px Verdana, Arial, sans-serif;
+}
+#content #body {
+  background-color: #ffffff;
+  padding: 10px;
+  margin: 10px;
+}
+/*  Command to compile LESS :
+ *  lessc client/default/less/styles.less > client/default/css/styles.css
+ *
+ *  Or create an aliase to save you remembering that line!
+ */

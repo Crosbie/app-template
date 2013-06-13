@@ -4,10 +4,30 @@
 
 $(document).ready(function(){
 	if(g_debug){
-		console.log('App Initializing...');	
+		console.log('App Initializing...');
 	}
-	
+
 	uiInit();
+
+	$(window).bind('orientationchange', function(e) {
+
+	switch ( window.orientation ) {
+
+		case 0:
+			alert('portrait mode');
+		break;
+
+		case 90:
+			alert('landscape mode screen turned to the left');
+		break;
+
+		case -90:
+			alert('landscape mode screen turned to the right');
+		break;
+
+		}
+
+	});
 });
 
 
@@ -17,7 +37,7 @@ $(document).ready(function(){
  */
 function uiInit(pagesArray){
 	if(g_debug){
-		console.log('UI Initializing...');	
+		console.log('UI Initializing...');
 	}
 
 	// TODO: move this to Login View file
@@ -29,7 +49,7 @@ function uiInit(pagesArray){
 				alert("Login Failed: " + msg);
 			}
 		});
-	})
+	});
 
 	//TODO: Decide on best practice for init UI, without prescribing
 	// any single UI framework

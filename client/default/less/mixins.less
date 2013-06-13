@@ -3,6 +3,10 @@
  */
 
 
+/*
+ * Provide a bottom and top color for button gradients
+ * these colors will be inverted while the button is pressed
+ */
 .button-gradient (@bottom, @top) {
     background-image: linear-gradient(bottom, @bottom 0%, @top 85%);
     background-image: -webkit-linear-gradient(bottom, @bottom 0%, @top 85%);
@@ -27,6 +31,9 @@
     }
 }
 
+/*
+ * Provide bottom and top colors for gradient
+ */
 .background-gradient (@bottom, @top) {
     background-image: linear-gradient(bottom, @bottom 0%, @top 85%);
     background-image: -webkit-linear-gradient(bottom, @bottom 0%, @top 85%);
@@ -39,6 +46,9 @@
     );
 }
 
+/*
+ * Mixins for variations on app fonts
+ */
 .font1 (@size){
     font: normal @size @font1;
 }
@@ -51,4 +61,10 @@
 }
 .font2-bold (@size){
     font: bold @size @font2;
+}
+
+.border-radius (@size){
+    -webkit-border-radius: @size;
+    -moz-border-radius: @size;
+    border-radius: @size;
 }

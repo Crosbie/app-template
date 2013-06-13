@@ -7,20 +7,20 @@
 var LoginCtr = (function(module) {
 	//interface----------------------------------
 
-		module.login = login // make act call to cloud
+		module.login = login; // make act call to cloud
 
 	//implementation-------------------------------
 
 	/*
 	 * Login Call Function
 	 *
-	 * @user String 		- username
-	 * @pass String 		- password
-	 * @cb function 		- callback function
+	 * @user String		- username
+	 * @pass String		- password
+	 * @cb function		- callback function
 	 */
 	function login(user,pass,cb){
 		if(!user || !pass || !cb){
-			console.log('missing username, password or callback')
+			console.log('missing username, password or callback');
 			return cb(false, 'Client error: Missing Params');
 		}
 
@@ -42,7 +42,7 @@ var LoginCtr = (function(module) {
 				return cb(false, err.error);
 			}
 		);
-	};
+	}
 
 	return module;
 
