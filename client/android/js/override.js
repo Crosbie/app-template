@@ -21,8 +21,12 @@
 // 	});
 
 $(".btn")
-	.bind("touchstart", function () {
+	.bind("click", function () {
+		var self = this;
 		$(this).addClass("fake-active");
+		setTimeout(function(){
+			$(self).removeClass("fake-active");
+		},100);
 	})
 	.bind("touchend", function() {
 		$(this).removeClass("fake-active");
