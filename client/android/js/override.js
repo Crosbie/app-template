@@ -21,12 +21,13 @@
 // 	});
 overRide = function(){
 	$(".btn")
-	.click(function () {
-		var self = this;
+	.bind("touchstart", function () {
 		$(this).addClass("fake-active");
-		console.log('yo');
-		setTimeout(function(){
-			$(self).removeClass("fake-active");
-		},100);
+	})
+	.bind("touchend", function() {
+		$(this).removeClass("fake-active");
+	})
+	.bind("touchcancel", function() {
+		$(this).removeClass("fake-active");
 	});
 };
