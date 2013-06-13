@@ -392,7 +392,8 @@ li {
   user-select: none;
   text-align: center;
 }
-.btn:active {
+.btn:active,
+.btn.fake-active {
   background-image: linear-gradient(bottom, #0198e1 0%, #015e7b 85%);
   background-image: -webkit-linear-gradient(bottom, #0198e1 0%, #015e7b 85%);
   background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #0198e1), color-stop(0.85, #015e7b));
@@ -402,7 +403,8 @@ li {
   background-image: -webkit-linear-gradient(bottom, #3a6016 0%, #61b329 85%);
   background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #3a6016), color-stop(0.85, #61b329));
 }
-.btn.accept:active {
+.btn.accept:active,
+.btn.accept.fake-active {
   background-image: linear-gradient(bottom, #61b329 0%, #3a6016 85%);
   background-image: -webkit-linear-gradient(bottom, #61b329 0%, #3a6016 85%);
   background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #61b329), color-stop(0.85, #3a6016));
@@ -412,7 +414,8 @@ li {
   background-image: -webkit-linear-gradient(bottom, #99000d 0%, #ff0000 85%);
   background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #99000d), color-stop(0.85, #ff0000));
 }
-.btn.decline:active {
+.btn.decline:active,
+.btn.decline.fake-active {
   background-image: linear-gradient(bottom, #ff0000 0%, #99000d 85%);
   background-image: -webkit-linear-gradient(bottom, #ff0000 0%, #99000d 85%);
   background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ff0000), color-stop(0.85, #99000d));
@@ -422,7 +425,7 @@ li {
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
-  box-shadow: 1px 1px 1px 0 #000000;
+  box-shadow: 1px 1px 2px 0 #000000;
 }
 #content {
   display: block;
