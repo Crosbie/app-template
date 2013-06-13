@@ -21,7 +21,7 @@
 // 	});
 
 $(".btn")
-	.bind("click", function () {
+	.click(function () {
 		var self = this;
 		$(this).addClass("fake-active");
 		// setTimeout(function(){
