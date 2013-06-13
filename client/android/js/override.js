@@ -9,16 +9,6 @@
  * on Android webKit on 'li' elements
  */
 
-// $(".btn")
-// 	.bind("touchstart", function () {
-// 		$(this).addClass("fake-active");
-// 	})
-// 	.bind("touchend", function() {
-// 		$(this).removeClass("fake-active");
-// 	})
-// 	.bind("touchcancel", function() {
-// 		$(this).removeClass("fake-active");
-// 	});
 overRide = function(){
 	$(".btn")
 	.bind("touchstart", function () {

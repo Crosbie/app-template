@@ -4,7 +4,7 @@
 
 $(document).ready(function(){
 	if(g_debug){
-		console.log('App Initializing...');
+		log('App Initializing...');
 	}
 
 	uiInit();
@@ -19,7 +19,7 @@ $(document).ready(function(){
  */
 function uiInit(pagesArray){
 	if(g_debug){
-		console.log('UI Initializing...');
+		log('UI Initializing...');
 	}
 
 	// TODO: move this to Login View file
