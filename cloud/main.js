@@ -5,12 +5,12 @@
 // --- dependencies ------
 
 
-var Backend = require('./backend.js')
+var Backend = require('./backend.js');
 
 // Test function
 exports.getConfig = function(params, cb){
-	return cb({config: 'true'});
-}
+	return cb(null,{config: 'true'});
+};
 
 /*
  * Login Function
@@ -20,5 +20,5 @@ exports.getConfig = function(params, cb){
 exports.login = function(params, cb){
 	Backend.login(params, function(err, data){
 		return cb(err, data);
-	})
-}
+	});
+};

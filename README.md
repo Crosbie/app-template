@@ -42,9 +42,9 @@ Three things are now needed to move onto local development:
 
 There are some node modules that must be installed before beginning development
 
-+ **LESS** 				- sudo npm install -g less
-+ **Mocha-PhantomJS** 	- sudo npm install -g mocha-phantomjs
-+ **PhantomJS** 		- sudo npm install -g phantomjs
++ **LESS** 				    - sudo npm install -g less
++ **Mocha-PhantomJS** 	    - sudo npm install -g mocha-phantomjs
++ **PhantomJS** 		    - sudo npm install -g phantomjs
 
 To set up FHC local, you must do the following:
 
@@ -55,4 +55,22 @@ To set up FHC local, you must do the following:
 + Browse to 127.0.0.1:8000 you should see Hello World
 
 ---
+
+## Grunt
+
+The template has a basic Grunt setup, for linting and testing your client and cloud code. 
+Follow this link to learn more about grunt:
+[GruntJS](http://blog.strongloop.com/use-grunt-js-and-the-power-of-javascript-to-automating-repetitive-tasks/?goback=%2Egde_121615_member_249211688).
+Below are the steps needed to setup your development environment to use Grunt also:
+
++ **Grunt Command Line**    - sudo npm install -g grunt-cli
++ **Grunt**                 - sudo npm install grunt --save-dev
++ **Grunt jshint**          - sudo npm install grunt-contrib-jshint --save-dev
++ **Grunt mocha-phantomjs** - sudo npm install grunt-mocha-phantomjs --save-dev
++ **Grunt nodeunit**        - sudo npm install grunt-contrib-nodeunit --save-dev
+
+Once these steps have been completed, run "grunt" from the terminal. This will run JShint over your code,
+then run all your client tests, followed by all your cloud tests.
+
+
 

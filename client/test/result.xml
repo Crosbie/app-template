@@ -1,0 +1,13 @@
+
+[0m[0m
+[0m  Act module tests[0m
+  [90m  ◦ Null parameters failover: [0m
+[A[2Kmissing act name or callbacks
+  [32m  ✓[0m[90m Null parameters failover [0m
+  [90m  ◦ Make getConfig call to cloud: [0m
+[A[2K{"config":true}
+  [32m  ✓[0m[90m Make getConfig call to cloud [0m
+
+
+[92m [0m[32m 2 tests complete[0m[90m (11 ms)[0m
+

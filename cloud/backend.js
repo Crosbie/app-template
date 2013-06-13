@@ -7,14 +7,14 @@
 /*
  * Login Function
  *
- * @param {String} 		- username
- * @param {String} 		- password
- * @param {function} 	- callback function
+ * @param {String}		- username
+ * @param {String}		- password
+ * @param {function}	- callback function
  */
 exports.login = function(params, cb){
 	var self = this;
-	var user = params.user;
-	var pass = params.pass;
+	var user = params.username;
+	var pass = params.password;
 	var res  = {};
 	if(!user || !pass){
 		res.status = false;
@@ -39,14 +39,14 @@ exports.login = function(params, cb){
 /*
  * Backend Call function
  * All backend functions use this to access the external system
- * @param {String} 		- function name on backend
- * @param {object} 		- params object
+ * @param {String}		- function name on backend
+ * @param {object}		- params object
  * @param {function}	- callback
  */
 exports.backendCall = function(fn, params, cb){
 	// TODO: make external web call
 	return cb(true, {test: 'test'});
-}
+};
 
 
 
