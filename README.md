@@ -6,6 +6,10 @@ platform, it contains the basic app structure and [LESS](http://lesscss.org/) st
 
 ---
 
+![ScreenShot](https://raw.github.com/Crosbie/app-template/master/screenshot.png)
+
+---
+
 Below is an outline of the template structure:
 
 ### client
