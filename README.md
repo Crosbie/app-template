@@ -2,7 +2,7 @@ Template App - Getting Started
 ===============
 
 This project is intended to be a starting point for all future apps built on the [FeedHenry](http://www.feedhenry.com)
-platform, it contains the basic app structure and [LESS](http://lesscss.org/) styles to speed up the building and theming of apps 
+platform, it contains the basic app structure and [LESS](http://lesscss.org/) styles to speed up the building and theming of apps. Gruntjs is used for automating tasks, like running JShint and all app tests. Tests are in place for both client and cloud parts, and can be run individually from the terminal, or via a grunt task.
 
 ---
 
