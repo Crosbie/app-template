@@ -24,7 +24,7 @@ var LoginCtr = (function(module) {
 			return cb(false, 'Client error: Missing Params');
 		}
 
-		Act.call("login", {user: user,pass:pass},
+		Act.call("login", {username: user,password:pass},
 			function(res){
 				if(res.status){
 					console.log('Login Succeeded');
