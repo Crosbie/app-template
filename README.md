@@ -31,6 +31,7 @@ contains the following files/folders:
 
 ### cloud
 So far just contains a sample login function, setup so that it can easily tie into an external back-end system.
+The cloud code also contains tests written in nodeunit.
 
 ---
 
