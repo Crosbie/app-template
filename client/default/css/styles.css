@@ -440,6 +440,19 @@ li {
   padding: 10px;
   margin: 10px;
 }
+@media only screen and (orientation: landscape) {
+  #content #body .accept {
+    background-image: linear-gradient(bottom, #ffffff 0%, #0198e1 85%);
+    background-image: -webkit-linear-gradient(bottom, #ffffff 0%, #0198e1 85%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ffffff), color-stop(0.85, #0198e1));
+  }
+  #content #body .accept:active,
+  #content #body .accept.fake-active {
+    background-image: linear-gradient(bottom, #0198e1 0%, #ffffff 85%);
+    background-image: -webkit-linear-gradient(bottom, #0198e1 0%, #ffffff 85%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #0198e1), color-stop(0.85, #ffffff));
+  }
+}
 /*  Command to compile LESS :
  *  lessc client/default/less/styles.less > client/default/css/styles.css
  *
