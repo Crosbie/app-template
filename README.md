@@ -26,11 +26,11 @@ contains the following files/folders:
     + **less** - folder containing all LESS styles and mixins.
     + **lib** - folder containing all 3rd party libraries.
 
-+ **test** - The _package_ containing all client-side tests. The index file within this package contains instructions on how to get your tests up and running.
++ **test** - The _package_ containing all client-side tests. Mocha-PhantomJs is the test framework used. The index file within this package contains instructions on how to get your tests up and running.
 
 
 ### cloud
-Very little here yet, main.js, package.json and application.js
+So far just contains a sample login function, setup so that it can easily tie into an external back-end system.
 
 ---
 
