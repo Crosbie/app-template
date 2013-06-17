@@ -1,0 +1,48 @@
+/*
+ * Default styles for app
+ */
+
+body {
+	color			: @mainFontColor;
+	background-color: @mainBgColor;
+}
+
+h1 {
+	color: @mainHeadingColor;
+    text-align: center;
+}
+
+li {
+	list-style-type: none;
+}
+
+.btn {
+    border-radius: 5px;
+    border: 1px solid black;
+    box-shadow: 1px 1px 1px 0 rgba(255, 255, 255, 0.5);
+    text-shadow: 1px 1px #000000;
+    margin: 20px;
+    color: @btnFont;
+    padding: 5px 10px 5px 10px;
+    .button-gradient(darken(spin(@appColor2, -5), 20%), @appColor2); // dyanimcally create a gradient 20% darker than appColor2
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    text-align: center;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0); // stop Android putting border around btn when clicked
+}
+
+.btn.accept {
+    .button-gradient(darken(spin(@btnAccept, -5), 20%), @btnAccept); // dyanimcally create a gradient 20% darker than accept color
+}
+
+.btn.decline {
+    .button-gradient(darken(spin(@btnDecline, -5), 20%), @btnDecline); // dyanimcally create a gradient 20% darker than decline color
+}
+
+.box {
+    background-color: #ffffff;
+    .border-radius(10px);
+    box-shadow: 1px 1px 2px 0 #000000;
+}

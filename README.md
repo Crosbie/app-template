@@ -77,5 +77,25 @@ Below are the steps needed to setup your development environment to use Grunt al
 Once these steps have been completed, run "grunt" from the terminal. This will run JShint over your code,
 then run all your client tests, followed by all your cloud tests.
 
+---
 
+## Testing
 
+The testing frameworks used are mocha-phantomJS (client) and nodeunit (cloud). A test coverage tool can be used also to generate code coverage reports. Here are the steps to set up 'jscoverage' with the app template.
+
++ Clone jscoverage from github into an empty directory on your machine [LINK](http://blog.alexanderseville.com/post/25512014087/node-jscoverage-with-vows-js).
++ Install json2htmlcov 
+    sudo npm install -g json2htmlcov
++ Instrument your code, from your client directory, run:
+    jscoverage default default-inst
++ In your test package, create a symbolic link to the new 'default-inst' package
+    ln -s ../default-inst default
+
+Now you are ready to start generating coverage reports. As the reports are typically output in JSON format, we have an extra step to convert them to a _user-friendly- html page
+
++ To create the JSON file, From your test package, run:
+    cat | mocha-phantomjs -R json-cov index.html > report.json
++ Them to convert the file to html:
+    cat report.json | json2htmlcov > report.html
+
+This will leave you will a report.html page that you can open in the broswer to show your code coverage % for all of your code! Simples!

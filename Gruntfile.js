@@ -33,5 +33,8 @@ module.exports = function(grunt) {
     //default tasks to run
     grunt.registerTask('default', ['jshint', 'mocha_phantomjs', 'nodeunit']);
 
+    grunt.registerTask('coverage', 'Generate code coverage report', function() {
+
+    });
 };
 
