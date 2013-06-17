@@ -21,7 +21,7 @@ var Act = (function(module) {
 	 */
 	function call(func, params, successFn, failFn){
 		if(!func || !successFn || !failFn){
-			console.log('missing act name or callbacks');
+			// console.log('missing act name or callbacks');
 			return false;
 		}
 

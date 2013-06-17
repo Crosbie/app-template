@@ -10,9 +10,7 @@ describe('Act module tests',function(){
 		Act.call('getConfig', {},
 		function(res){
 			assert.ok(res);
-			console.log(res);
 		}, function(err){
-			console.error(err);
 			assert.ok(!err);
 		});
 	});
