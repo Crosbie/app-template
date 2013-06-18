@@ -29,17 +29,20 @@ module.exports = function(grunt) {
                 fail:true
             },
 
-            instrumentJS : {
-                cmd: 'jscoverage client/default client/default-inst'
+            instrumentJS : {    // remove old inst folder, and create new one
+                cmd: 'rm -R client/default-inst && jscoverage client/default client/default-inst'
             },
-            json: {
+            json: {     // generate json report, and output to file
                 cmd: 'mocha-phantomjs -R json-cov client/test/index.html > report.json'
             },
-            html: {
+            html: {     // convert json report to html report
                 cmd: 'cat report.json | json2htmlcov > report.html'
             },
-            rmFiles: {
-                cmd: 'rm -R client/default-inst && rm report.json'
+            rmFiles: {  // remove json file
+                cmd: 'rm report.json'
+            },
+            less: {     // compile less files into css
+                cmd: 'lessc client/default/less/styles.less > client/default/css/styles.css'
             }
         }
 
@@ -51,9 +54,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-nodeunit');
     grunt.loadNpmTasks('grunt-bg-shell');
 
-    //default tasks to run
-    grunt.registerTask('default', ['jshint', 'mocha_phantomjs', 'nodeunit']);
 
+    // --------- TASKS AVAILABLE FROM TERMINAL ------------
+    grunt.registerTask('test', ['jshint', 'mocha_phantomjs', 'nodeunit']);
     grunt.registerTask('coverage', ['bgShell:instrumentJS','bgShell:json','bgShell:html', 'bgShell:rmFiles']);
+    grunt.registerTask('less', ['bgShell:less']);
 };
 

@@ -28,6 +28,7 @@
 
         <!-- Libs -->
         <script src="lib/mockfhActCalls.js"></script>
+        <script src="default/js/prefs.js"></script>
 
         <!-- Modules -->
         <script src="default/app/models/Act.js"></script>
@@ -38,6 +39,9 @@
 
 
         <script>
+            // turn logging off, this stops the coverage parser from breaking
+            g_debug = false;
+
             if (window.mochaPhantomJS) { mochaPhantomJS.run(); }
             else { mocha.run(); }
         </script>

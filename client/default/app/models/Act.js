@@ -26,7 +26,7 @@ var Act = (function(module) {
 		}
 
 		params = params || {};
-
+		log('hello');
 		$fh.act({
 			'act' : func,
 			'req' : params
