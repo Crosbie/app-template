@@ -1,3 +1,7 @@
 .fhclocal
 fhc-debug.log
 .DS_Store
+.log
+
+# Node modules used should be installed using NPM per developer.
+node_modules

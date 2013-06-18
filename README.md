@@ -78,6 +78,13 @@ Below are the steps needed to setup your development environment to use Grunt al
 Once these steps have been completed, run `grunt` from the terminal. This will run JShint over your code,
 then run all your client tests, followed by all your cloud tests.
 
+Available grunt tasks:
++ `grunt test` - run jshint and both client and cloud tests
++ `grunt inst` - run jscoverage to instrument all your app code
++ `grunt noInst` - delete the instrumented code folder, use before _grunt inst_
++ `grunt coverage` - delete inst folder, create new one, generate coverage report, tests must all be passing before running this
++ `grunt less` - compile LESS files into css
+
 ---
 
 ## Testing

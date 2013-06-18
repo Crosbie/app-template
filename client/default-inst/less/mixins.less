@@ -1,0 +1,70 @@
+/*
+ * Mixins for CSS3 properties and various reusable styles for the app.
+ */
+
+
+/*
+ * Provide a bottom and top color for button gradients
+ * these colors will be inverted while the button is pressed
+ */
+.button-gradient (@bottom, @top) {
+    background-image: linear-gradient(bottom, @bottom 0%, @top 85%);
+    background-image: -webkit-linear-gradient(bottom, @bottom 0%, @top 85%);
+    background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0, @bottom),
+        color-stop(0.85, @top)
+    );
+
+    &:active, &.fake-active {
+        background-image: linear-gradient(bottom, @top 0%, @bottom 85%);
+        background-image: -webkit-linear-gradient(bottom, @top 0%, @bottom 85%);
+        background-image: -webkit-gradient(
+            linear,
+            left bottom,
+            left top,
+            color-stop(0, @top),
+            color-stop(0.85, @bottom)
+        );
+    }
+}
+
+/*
+ * Provide bottom and top colors for gradient
+ */
+.background-gradient (@bottom, @top) {
+    background-image: linear-gradient(bottom, @bottom 0%, @top 85%);
+    background-image: -webkit-linear-gradient(bottom, @bottom 0%, @top 85%);
+    background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0, @bottom),
+        color-stop(0.85, @top)
+    );
+}
+
+/*
+ * Mixins for variations on app fonts
+ */
+.font1 (@size){
+    font: normal @size @font1;
+}
+.font1-bold (@size){
+    font: bold @size @font1;
+}
+
+.font2 (@size){
+    font: normal @size @font2;
+}
+.font2-bold (@size){
+    font: bold @size @font2;
+}
+
+.border-radius (@size){
+    -webkit-border-radius: @size;
+    -moz-border-radius: @size;
+    border-radius: @size;
+}
