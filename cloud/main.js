@@ -22,3 +22,7 @@ exports.login = function(params, cb){
 		return cb(err, data);
 	});
 };
+
+exports.heartbeat = function(params, cb) {
+    return cb(null,{success:'heartbeat'});
+}
