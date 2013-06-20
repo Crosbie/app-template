@@ -3,9 +3,8 @@
  */
 initConFSM();
 $(document).ready(function(){
-	if(g_debug){
-		log('App Initializing...');
-	}
+	App.log('App Initializing...');
+
     //Attempt to go online via Connectivity FSM
     httpConnectivity.handle('go.online');
 	uiInit();
@@ -19,9 +18,7 @@ $(document).ready(function(){
  * @param - pagesArray
  */
 function uiInit(pagesArray){
-	if(g_debug){
-		log('UI Initializing...');
-	}
+	App.log('UI Initializing...');
 
 	// TODO: move this to Login View file
 	$('#start').unbind().bind('click', function(){
