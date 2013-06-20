@@ -2,7 +2,8 @@
  * App Initialization
  */
 initConFSM();
-$(document).ready(function(){
+// $(document).ready(function(){
+$fh.ready(function(){
 	App.log('App Initializing...');
 
     //Attempt to go online via Connectivity FSM
