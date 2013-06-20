@@ -106,7 +106,9 @@ Now you are ready to start generating coverage reports. As the reports are typic
 + Them to convert the file to html:
     `cat report.json | json2htmlcov > report.html`
 
-This will leave you will a report.html page that you can open in the broswer to show your code coverage % for all of your code! Simples! Now that you have put down the ground work, the next time you need to generate a coverage report, you can simply write `grunt coverage`. NB - if your tests contain any console.logs, the coverage report will fail to parse!
+This will leave you will a report.html page that you can open in the broswer to show your code coverage % for all of your code! Simples! Now that you have put down the ground work, the next time you need to generate a coverage report, you can simply write `grunt coverage`. 
+NB - if your tests contain any console.logs, the coverage report will fail to parse! 
+NNB - if any of your tests are failing, the report will fail to parse!
 
 **Sample Report**
 
