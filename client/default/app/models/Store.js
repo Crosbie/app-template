@@ -13,7 +13,7 @@ var Store = (function(module) {
 
     module.save     = save;    // save a model to local storage
     module.load     = load;    // load a model from local storage
-    module.clear    = clear;  // clear a model from local storage
+    module.remove   = remove;  // clear a model from local storage
     module.clearAll = clearAll; // wipe local storage
 
 
@@ -48,10 +48,10 @@ var Store = (function(module) {
         });
     }
 
-    function clear(modelName, callback){
+    function remove(modelName, callback){
         $fh.data({
             act: "remove",
-            key: "foo"
+            key: modelName
         }, function() {
             //data removed
             return callback(true);
@@ -63,14 +63,9 @@ var Store = (function(module) {
     }
 
     function clearAll(callback){
-        log('Clearing LocalStorage');
+        log('**Clearing LocalStorage**');
         localStorage.clear();
-
-        if(localStorage.length ===0){
-            return callback(true);
-        } else {
-            return callback(false, "Failed to clear local storage");
-        }
+        return callback(true);
     }
 
     return module;

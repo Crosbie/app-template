@@ -6,6 +6,21 @@
   [90m  ◦ Make getConfig call to cloud: [0m
 [A[2K  [32m  ✓[0m[90m Make getConfig call to cloud [0m
 
+[0m  Store module tests[0m
+  [90m  ◦ Test Save function: [0m
+[A[2K  [32m  ✓[0m[90m Test Save function [0m
+  [90m  ◦ Test Load function: [0m
+[A[2K  [32m  ✓[0m[90m Test Load function [0m
+  [90m  ◦ Test Remove function: [0m
+[A[2K  [31m  1) Test Remove function[0m
 
-[92m [0m[32m 2 tests complete[0m[90m (11 ms)[0m
+
+[91m  ✖[0m[31m 1 of 5 tests failed[0m[90m:[0m
+
+[0m  1) Store module tests Test Remove function:
+[0m[31m     expected false to be truthy[0m[90m
+      at file:///Users/ecrosbie/workspace/appTemplate/client/test/lib/chai.js:258
+      at file:///Users/ecrosbie/workspace/appTemplate/client/test/lib/chai.js:458
+      at file:///Users/ecrosbie/workspace/appTemplate/client/test/lib/chai.js:2822
+[0m
 

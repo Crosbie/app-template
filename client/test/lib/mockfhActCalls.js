@@ -14,11 +14,42 @@ $fh.act = function(params, success, fail){
 	switch(act){
 		case "getConfig":
 			return success({config: true});
-			break;
 
 		default :
 			// if act value is empty or a matching act call does not exist above, the failure callback is returned
 			return fail("Error: Act doesnt exist");
+	}
+};
+
+$fh.data = function(params,success,fail){
+	var act = params.act || null;
+	var key = params.key || null;
+	var val = params.val || null;
+
+	if(act===null || key===null){
+		return fail('Missing params', {});
+	}
+
+	switch(act){
+		case 'save':
+			localStorage.setItem(key, val);
+			return success();
+		case 'load':
+			var res = localStorage.getItem(key);
+			if(res){
+				return success(res);
+			} else {
+				return fail('Key doesnt exist');
+			}
 			break;
+
+		case 'remove':
+			var start = localStorage.length;
+			localStorage.removeItem(key);
+			var end = localStorage.length;
+			if(start===end){
+				return fail('Key doesnt exist', {});
+			}
+			return success();
 	}
 };

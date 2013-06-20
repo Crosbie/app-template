@@ -14,4 +14,13 @@ describe('Act module tests',function(){
 			assert.ok(!err);
 		});
 	});
+
+	it('Make invalid call to cloud', function(){
+		Act.call('asdf', {},
+		function(res){
+			// not reached
+		}, function(err){
+			assert.ok(err);
+		});
+	});
 });
