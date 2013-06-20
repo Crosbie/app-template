@@ -428,7 +428,8 @@ li {
   border-radius: 10px;
   box-shadow: 1px 1px 2px 0 #000000;
 }
-.offline h1 {
+.offline h1,
+.disconnected h1 {
   color: red;
 }
 .online h1 {
