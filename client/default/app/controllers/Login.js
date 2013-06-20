@@ -20,25 +20,25 @@ var LoginCtr = (function(module) {
 	 */
 	function login(user,pass,cb){
 		if(!user || !pass || !cb){
-			console.log('missing username, password or callback');
+			App.log('missing username, password or callback');
 			return cb(false, 'Client error: Missing Params');
 		}
 
 		Act.call("login", {username: user,password:pass},
 			function(res){
 				if(res.status){
-					console.log('Login Succeeded');
+					App.log('Login Succeeded');
 
 					// TODO: logic for storing session token locally
 
 					return cb(true);
 				} else {
-					console.log('Login Failed');
+					App.log('Login Failed');
 					return cb(false, res.error);
 				}
 
 			}, function(msg, err){
-				console.log("Act Error:", msg);
+				App.log("Act Error:", msg);
 				return cb(false, err.error);
 			}
 		);

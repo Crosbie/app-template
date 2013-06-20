@@ -63,7 +63,7 @@ var Store = (function(module) {
     }
 
     function clearAll(callback){
-        log('**Clearing LocalStorage**');
+        App.log('**Clearing LocalStorage**');
         localStorage.clear();
         return callback(true);
     }

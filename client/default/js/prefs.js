@@ -1,7 +1,9 @@
 /*
  * ---- App Global Variables -----
  */
-
+if (typeof App  == "undefined"){
+    App= {}; //set a global namespace for the app
+}
 var g_debug     = true;	// true to output excessive logging
 var g_dummyData = true;	// true to use live data, false to use dummy data
 var g_dev       = true;	// true if developing locally
@@ -14,7 +16,7 @@ var g_dev       = true;	// true if developing locally
  *
  * Accepts 1 or 2 inputs
  */
-log = function(msg,msg2){
+App.log = function(msg,msg2){
 	if(g_debug){
 		if(msg && msg2){
 			console.log(msg, msg2);
