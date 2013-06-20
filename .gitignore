@@ -5,3 +5,6 @@ fhc-debug.log
 
 # Node modules used should be installed using NPM per developer.
 node_modules
+
+# Client test results
+client/test/result.xml

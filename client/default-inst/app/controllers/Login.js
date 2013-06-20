@@ -27,7 +27,7 @@ var LoginCtr = (function (module) {
     _$jscoverage['app/controllers/Login.js'][22]++;
     if (! user || ! pass || ! cb) {
       _$jscoverage['app/controllers/Login.js'][23]++;
-      console.log("missing username, password or callback");
+      App.log("missing username, password or callback");
       _$jscoverage['app/controllers/Login.js'][24]++;
       return cb(false, "Client error: Missing Params");
     }
@@ -36,19 +36,19 @@ var LoginCtr = (function (module) {
   _$jscoverage['app/controllers/Login.js'][29]++;
   if (res.status) {
     _$jscoverage['app/controllers/Login.js'][30]++;
-    console.log("Login Succeeded");
+    App.log("Login Succeeded");
     _$jscoverage['app/controllers/Login.js'][34]++;
     return cb(true);
   }
   else {
     _$jscoverage['app/controllers/Login.js'][36]++;
-    console.log("Login Failed");
+    App.log("Login Failed");
     _$jscoverage['app/controllers/Login.js'][37]++;
     return cb(false, res.error);
   }
 }), (function (msg, err) {
   _$jscoverage['app/controllers/Login.js'][41]++;
-  console.log("Act Error:", msg);
+  App.log("Act Error:", msg);
   _$jscoverage['app/controllers/Login.js'][42]++;
   return cb(false, err.error);
 }));
@@ -56,4 +56,4 @@ var LoginCtr = (function (module) {
   _$jscoverage['app/controllers/Login.js'][47]++;
   return module;
 })(LoginCtr || {});
-_$jscoverage['app/controllers/Login.js'].source = ["/*--------------------","\tapp/controllers/Login","","\tController used to handle login logic","--------------------*/","","var LoginCtr = (function(module) {","\t//interface----------------------------------","","\t\tmodule.login = login; // make act call to cloud","","\t//implementation-------------------------------","","\t/*","\t * Login Call Function","\t *","\t * @user String\t\t- username","\t * @pass String\t\t- password","\t * @cb function\t\t- callback function","\t */","\tfunction login(user,pass,cb){","\t\tif(!user || !pass || !cb){","\t\t\tconsole.log('missing username, password or callback');","\t\t\treturn cb(false, 'Client error: Missing Params');","\t\t}","","\t\tAct.call(\"login\", {username: user,password:pass},","\t\t\tfunction(res){","\t\t\t\tif(res.status){","\t\t\t\t\tconsole.log('Login Succeeded');","","\t\t\t\t\t// TODO: logic for storing session token locally","","\t\t\t\t\treturn cb(true);","\t\t\t\t} else {","\t\t\t\t\tconsole.log('Login Failed');","\t\t\t\t\treturn cb(false, res.error);","\t\t\t\t}","","\t\t\t}, function(msg, err){","\t\t\t\tconsole.log(\"Act Error:\", msg);","\t\t\t\treturn cb(false, err.error);","\t\t\t}","\t\t);","\t}","","\treturn module;","","})(LoginCtr || {});","","","","","",""];
+_$jscoverage['app/controllers/Login.js'].source = ["/*--------------------","\tapp/controllers/Login","","\tController used to handle login logic","--------------------*/","","var LoginCtr = (function(module) {","\t//interface----------------------------------","","\t\tmodule.login = login; // make act call to cloud","","\t//implementation-------------------------------","","\t/*","\t * Login Call Function","\t *","\t * @user String\t\t- username","\t * @pass String\t\t- password","\t * @cb function\t\t- callback function","\t */","\tfunction login(user,pass,cb){","\t\tif(!user || !pass || !cb){","\t\t\tApp.log('missing username, password or callback');","\t\t\treturn cb(false, 'Client error: Missing Params');","\t\t}","","\t\tAct.call(\"login\", {username: user,password:pass},","\t\t\tfunction(res){","\t\t\t\tif(res.status){","\t\t\t\t\tApp.log('Login Succeeded');","","\t\t\t\t\t// TODO: logic for storing session token locally","","\t\t\t\t\treturn cb(true);","\t\t\t\t} else {","\t\t\t\t\tApp.log('Login Failed');","\t\t\t\t\treturn cb(false, res.error);","\t\t\t\t}","","\t\t\t}, function(msg, err){","\t\t\t\tApp.log(\"Act Error:\", msg);","\t\t\t\treturn cb(false, err.error);","\t\t\t}","\t\t);","\t}","","\treturn module;","","})(LoginCtr || {});","","","","","",""];

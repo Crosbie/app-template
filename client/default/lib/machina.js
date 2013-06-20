@@ -55,7 +55,7 @@
             };
         }
     };
-    
+
     if ( !_.deepExtend ) {
         var behavior = {
                 "*" : function ( obj, sourcePropKey, sourcePropVal ) {
@@ -95,7 +95,7 @@
                 } );
                 return obj;
             };
-    
+
         _.mixin( {
             deepExtend : deepExtend
         } );
@@ -109,7 +109,7 @@
             this.transition( this.initialState );
         }
     };
-    
+
     _.extend( Fsm.prototype, {
         initialize: function() { },
         emit : function ( eventName ) {
@@ -151,7 +151,7 @@
                         handler = this[ "*" ];
                         action = "*";
                     }
-                    if ( ! this._currentAction ) 
+                    if ( ! this._currentAction )
                         this._currentAction = action ;
                     this.emit.call( this, HANDLING, { inputType: inputType, args: args.slice(1) } );
                     if (_.isFunction(handler))
@@ -264,14 +264,14 @@
             }
         }
     } );
-    
+
     Fsm.prototype.trigger = Fsm.prototype.emit;
-    
+
     var ctor = function () {};
-    
+
     var inherits = function ( parent, protoProps, staticProps ) {
         var fsm;
-    
+
         // The constructor function for the new subclass is either defined by you
         // (the "constructor" property in your `extend` definition), or defaulted
         // by us to simply call the parent's constructor.
@@ -282,35 +282,35 @@
                 parent.apply( this, arguments );
             };
         }
-    
+
         // Inherit class (static) properties from parent.
         _.deepExtend( fsm, parent );
-    
+
         // Set the prototype chain to inherit from `parent`, without calling
         // `parent`'s constructor function.
         ctor.prototype = parent.prototype;
         fsm.prototype = new ctor();
-    
+
         // Add prototype properties (instance properties) to the subclass,
         // if supplied.
         if ( protoProps ) {
             _.deepExtend( fsm.prototype, protoProps );
         }
-    
+
         // Add static properties to the constructor function, if supplied.
         if ( staticProps ) {
             _.deepExtend( fsm, staticProps );
         }
-    
+
         // Correctly set child's `prototype.constructor`.
         fsm.prototype.constructor = fsm;
-    
+
         // Set a convenience property in case the parent's prototype is needed later.
         fsm.__super__ = parent.prototype;
-    
+
         return fsm;
     };
-    
+
     // The self-propagating extend function that Backbone classes use.
     Fsm.extend = function ( protoProps, classProps ) {
         var fsm = inherits( this, protoProps, classProps );
@@ -344,7 +344,7 @@
             newFsm : []
         }
     };
-    
+
     machina.emit = machina.trigger;
     return machina;
 } ));

@@ -428,6 +428,12 @@ li {
   border-radius: 10px;
   box-shadow: 1px 1px 2px 0 #000000;
 }
+.offline h1 {
+  color: red;
+}
+.online h1 {
+  color: green;
+}
 #content {
   display: block;
   font: normal 22px "Lucida Sans Unicode", "Lucida Grande", sans-serif;

@@ -5,11 +5,11 @@
 --------------------*/
 var initConFSM = function() {
     httpConnectivity = new HttpConnectivityFsm({
-        stethoscope: new Stethoscope() 
+        stethoscope: new Stethoscope()
     });
     httpConnectivity.on("transition", function( data ) {
            $('#content').removeClass( data.fromState ).addClass( data.toState );
-           log("We're",data.toState);
+           App.log("We're",data.toState);
     });
 };
 
@@ -21,7 +21,7 @@ var initConFSM = function() {
 // For the sake of keeping this example somewhat simple, 
 // we'll just use the handle call directly...
 var HttpConnectivityFsm = machina.Fsm.extend({
-    
+
     // we'll assume we're offline and let the app
     // determine when to try and probe for state
     initialState : "offline",
@@ -32,7 +32,7 @@ var HttpConnectivityFsm = machina.Fsm.extend({
     // could indicate changes in connectivity
     initialize : function () {
         var self = this;
-        
+
         // The "stethoscope" is simply an object that can make a
         // request to a pre-determined HTTP endpoint and emit a
         // heartbeat event if the request is successful, or a
@@ -42,7 +42,7 @@ var HttpConnectivityFsm = machina.Fsm.extend({
                 self.handle.call( self, eventName );
             } );
         } );
-        
+
         $( window ).bind( "online", function () {
             self.handle( "window.online" );
         });
@@ -58,7 +58,7 @@ var HttpConnectivityFsm = machina.Fsm.extend({
         $( window.applicationCache ).bind( "downloading", function () {
             self.handle( "appCache.downloading" );
         });
-        
+
         $( document ).on( "resume", function () {
             self.handle( "device.resume" );
         });
@@ -66,14 +66,14 @@ var HttpConnectivityFsm = machina.Fsm.extend({
 
     states : {
         probing : {
-        
+
             // the "_onEnter" handler is a special machina
             // feature that gets executed as soon as you
             // enter the state. This is our "entry action".
             _onEnter : function () {
                 this.stethoscope.checkHeartbeat();
             },
-            
+
             // We're using a shortcut feature of machina here.
             // If the only action of an input handler is to
             // transition to a new state, then the value of the
@@ -82,7 +82,7 @@ var HttpConnectivityFsm = machina.Fsm.extend({
             heartbeat      : "online",
             "no-heartbeat" : "disconnected",
             "go.offline"   : "offline",
-            
+
             // the "*" is a special handler in machina that will
             // be invoked for any input that's not explicitly
             // handled by another handler in the same state.
@@ -130,7 +130,7 @@ $.extend( Stethoscope.prototype, {
         self.trigger( 'checking-heartbeat' );
         Act.call("heartbeat", {},
             function(res){
-                    console.log("heartbeat??");
+                    App.log("heartbeat??");
                  self.trigger( 'heartbeat' );
             }, function(msg, err){
                  self.trigger( 'no-heartbeat' );

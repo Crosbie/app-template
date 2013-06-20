@@ -2,38 +2,45 @@
 if (typeof _$jscoverage === 'undefined') _$jscoverage = {};
 if (! _$jscoverage['js/prefs.js']) {
   _$jscoverage['js/prefs.js'] = [];
+  _$jscoverage['js/prefs.js'][4] = 0;
   _$jscoverage['js/prefs.js'][5] = 0;
-  _$jscoverage['js/prefs.js'][6] = 0;
   _$jscoverage['js/prefs.js'][7] = 0;
-  _$jscoverage['js/prefs.js'][17] = 0;
-  _$jscoverage['js/prefs.js'][18] = 0;
+  _$jscoverage['js/prefs.js'][8] = 0;
+  _$jscoverage['js/prefs.js'][9] = 0;
   _$jscoverage['js/prefs.js'][19] = 0;
   _$jscoverage['js/prefs.js'][20] = 0;
   _$jscoverage['js/prefs.js'][21] = 0;
   _$jscoverage['js/prefs.js'][22] = 0;
+  _$jscoverage['js/prefs.js'][23] = 0;
+  _$jscoverage['js/prefs.js'][24] = 0;
 }
-_$jscoverage['js/prefs.js'][5]++;
-var g_debug = true;
-_$jscoverage['js/prefs.js'][6]++;
-var g_dummyData = true;
+_$jscoverage['js/prefs.js'][4]++;
+if (typeof App == "undefined") {
+  _$jscoverage['js/prefs.js'][5]++;
+  App = {};
+}
 _$jscoverage['js/prefs.js'][7]++;
+var g_debug = true;
+_$jscoverage['js/prefs.js'][8]++;
+var g_dummyData = true;
+_$jscoverage['js/prefs.js'][9]++;
 var g_dev = true;
-_$jscoverage['js/prefs.js'][17]++;
-log = (function (msg, msg2) {
-  _$jscoverage['js/prefs.js'][18]++;
+_$jscoverage['js/prefs.js'][19]++;
+App.log = (function (msg, msg2) {
+  _$jscoverage['js/prefs.js'][20]++;
   if (g_debug) {
-    _$jscoverage['js/prefs.js'][19]++;
+    _$jscoverage['js/prefs.js'][21]++;
     if (msg && msg2) {
-      _$jscoverage['js/prefs.js'][20]++;
+      _$jscoverage['js/prefs.js'][22]++;
       console.log(msg, msg2);
     }
     else {
-      _$jscoverage['js/prefs.js'][21]++;
+      _$jscoverage['js/prefs.js'][23]++;
       if (msg) {
-        _$jscoverage['js/prefs.js'][22]++;
+        _$jscoverage['js/prefs.js'][24]++;
         console.log(msg);
       }
     }
   }
 });
-_$jscoverage['js/prefs.js'].source = ["/*"," * ---- App Global Variables -----"," */","","var g_debug     = true;\t// true to output excessive logging","var g_dummyData = true;\t// true to use live data, false to use dummy data","var g_dev       = true;\t// true if developing locally","","","/*"," * Custom log function"," * Logging can be easily switched off by"," * setting g_debug to false."," *"," * Accepts 1 or 2 inputs"," */","log = function(msg,msg2){","\tif(g_debug){","\t\tif(msg &amp;&amp; msg2){","\t\t\tconsole.log(msg, msg2);","\t\t} else if(msg){","\t\t\tconsole.log(msg);","\t\t}","\t}","};"];
+_$jscoverage['js/prefs.js'].source = ["/*"," * ---- App Global Variables -----"," */","if (typeof App  == \"undefined\"){","    App= {}; //set a global namespace for the app","}","var g_debug     = true;\t// true to output excessive logging","var g_dummyData = true;\t// true to use live data, false to use dummy data","var g_dev       = true;\t// true if developing locally","","","/*"," * Custom log function"," * Logging can be easily switched off by"," * setting g_debug to false."," *"," * Accepts 1 or 2 inputs"," */","App.log = function(msg,msg2){","\tif(g_debug){","\t\tif(msg &amp;&amp; msg2){","\t\t\tconsole.log(msg, msg2);","\t\t} else if(msg){","\t\t\tconsole.log(msg);","\t\t}","\t}","};"];
