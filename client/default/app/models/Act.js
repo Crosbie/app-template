@@ -7,7 +7,7 @@
 var Act = (function(module) {
 	//interface----------------------------------
 
-		module.call = call; // make act call to cloud
+	module.call = call; // make act call to cloud
 
 	//implementation-------------------------------
 
