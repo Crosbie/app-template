@@ -27,7 +27,20 @@ Ext.application({
     ],
 
     views: [
+        'Main',
+        'Sidebar'
+    ],
+
+    controllers: [
         'Main'
+    ],
+
+    stores: [
+        'FlyOutNav'
+    ],
+
+    models: [
+        'FlyOutNav'
     ],
 
     icon: {

@@ -1,4 +1,4 @@
-Template App - Getting Started
+Template App - Getting Started [Sencha]
 ===============
 
 For sencha app, development is done in dev package.
