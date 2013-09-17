@@ -181,10 +181,7 @@ Ext.define('Ext.field.DatePicker', {
             masktap: 'onMaskTap'
         });
 
-
-        component.doMaskTap = Ext.emptyFn;
-
-        if (Ext.browser.is.AndroidStock2) {
+        if (Ext.os.is.Android2) {
             component.input.dom.disabled = true;
         }
     },
@@ -282,7 +279,7 @@ Ext.define('Ext.field.DatePicker', {
             change: 'onPickerChange',
             hide  : 'onPickerHide'
         });
-
+        
         this._picker = picker;
 
         return picker;

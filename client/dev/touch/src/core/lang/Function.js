@@ -36,7 +36,7 @@ Ext.Function = {
      *         name3: 'value3'
      *     });
      *
-     * @param {Function} fn
+     * @param {Function} setter
      * @return {Function} flexSetter
      */
     flexSetter: function(fn) {

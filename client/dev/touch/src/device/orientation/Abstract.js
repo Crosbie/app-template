@@ -2,7 +2,7 @@
  * @private
  */
 Ext.define('Ext.device.orientation.Abstract', {
-    mixins: ['Ext.mixin.Observable'],
+    extend: 'Ext.EventedBase',
 
     /**
      * @event orientationchange

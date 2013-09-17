@@ -173,14 +173,8 @@ Ext.define('Ext.scroll.View', {
     },
 
     updateElement: function(element) {
-        var scroller = this.getScroller(),
-            scrollerElement;
-
-
-        scrollerElement = element.getFirstChild().getFirstChild();
-        if (this.FixedHBoxStretching) {
-            scrollerElement = scrollerElement.getFirstChild();
-        }
+        var scrollerElement = element.getFirstChild().getFirstChild(),
+            scroller = this.getScroller();
 
         element.addCls(this.getCls());
         element.insertFirst(this.indicatorsGrid);

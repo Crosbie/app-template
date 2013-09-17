@@ -8,7 +8,7 @@ Ext.define('Ext.util.PaintMonitor', {
     ],
 
     constructor: function(config) {
-        if (Ext.browser.is.Firefox || (Ext.browser.is.WebKit && Ext.browser.engineVersion.gtEq('536') && !Ext.os.is.Blackberry)) {
+        if (Ext.browser.engineVersion.gtEq('536') && !Ext.os.is.BlackBerry) {
             return new Ext.util.paintmonitor.OverflowChange(config);
         }
         else {

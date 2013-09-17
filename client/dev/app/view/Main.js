@@ -1,40 +1,44 @@
-Ext.define('appTemplate.view.Main', {
+Ext.define('AppTemplate.view.Main', {
     extend: 'Ext.Container',
     xtype: 'main',
-    requires: [
-        'Ext.TitleBar'
-    ],
+    requires: ['Ext.TitleBar'],
     config: {
         id: 'mainContainer',
         autoDestroy: false,
         fullscreen: true,
-
-        items: [
-            {
-                xtype: 'sidebar'
+        items: [{
+            xtype: 'titlebar',
+            id: 'globalToolbar',
+            docked: 'top',
+            items: [{
+                xtype: 'button',
+                iconCls: 'list',
+                iconMask: true,
+                align: 'left',
+                id: 'navBtnFlyOutNav'
+            }, {
+                xtype: 'button',
+                text: 'Home',
+                align: 'right',
+                id: 'homeBtn',
+                action: 'homeNav',
+                hidden: true
+            }]
+        }, {
+            xtype: 'panel',
+            id: 'mainCardPanel',
+            height: '100%',
+            layout: {
+                type: 'card'
             },
-            {
-                docked: 'top',
-                xtype: 'titlebar',
-                title: 'FeedHenry App Template',
-                items: [{
-                    xtype: 'button',
-                    iconCls: 'list',
-                    iconMask: true,
-                    align: 'left',
-                    action: 'navButton',
-                    id: 'navBtnFlyOutNav'
-                }]
-            },
-            {
-                xtype: 'panel',
-                id: 'mainCardPanel',
-                height: '100%',
-                layout: {
-                    type:'card'
-                },
-                html:'This is the main card panel.'
+            items: [{
+                xtype: 'home'
+            }]
+        }],
+        listeners: {
+            initialize: function() {
+                Ext.getCmp('globalToolbar').titleComponent.innerElement.dom.style.fontSize = '80%';
             }
-        ]
+        }
     }
 });

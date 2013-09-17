@@ -2,7 +2,7 @@
  * @private
  */
 Ext.define('Ext.device.connection.Abstract', {
-    mixins: ['Ext.mixin.Observable'],
+    extend: 'Ext.Evented',
 
     config: {
         online: false,

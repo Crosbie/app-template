@@ -2,12 +2,13 @@
     /**
      * The application's namespace, used by Sencha Command to generate classes
      */
-    "name": "appTemplate",
+    "name": "AppTemplate",
 
     /**
      * The file path to this application's front HTML document, relative to this app.json file
      */
     "indexHtmlPath": "index.html",
+
 
     /**
      * The absolute URL to this application in development environment, i.e: the URL to run this application
@@ -32,20 +33,19 @@
      *                                      //  - "delta" to enable over-the-air delta update for this file
      *                                      //  - "full" means full update will be made when this file changes
      *          "x-bootstrap": true         // (Optional)
-     *                                      // Indicates a development mode only dependency.  
+     *                                      // Indicates a development mode only dependency.
      *                                      // These files will not be copied into the build directory or referenced
      *                                      // in the generate app.json manifest for the micro loader.
      *
      *      }
      */
-    "js": [
-        {
+    "js": [{
             "path": "touch/sencha-touch.js",
             "x-bootstrap": true
-        },
-        {
+        }, {
             "path": "app.js",
-            "bundle": true,  /* Indicates that all class dependencies are concatenated into this file when build */
+            "bundle": true,
+            /* Indicates that all class dependencies are concatenated into this file when build */
             "update": "delta"
         }
     ],
@@ -66,8 +66,7 @@
      *
      *      }
      */
-    "css": [
-        {
+    "css": [{
             "path": "resources/css/app.css",
             "update": "delta"
         }
@@ -81,13 +80,13 @@
          * List of items in the CACHE MANIFEST section
          */
         "cache": [
-            "index.html"
+                "index.html"
         ],
         /**
          * List of items in the NETWORK section
          */
         "network": [
-            "*"
+                "*"
         ],
         /**
          * List of items in the FALLBACK section
@@ -99,16 +98,14 @@
      * Extra resources to be copied along when build
      */
     "resources": [
-        "resources/images",
-        "resources/icons",
-        "resources/startup"
+            "resources/images"
     ],
 
     /**
      * File / directory name matchers to ignore when copying to the builds, must be valid regular expressions
      */
     "ignore": [
-        "\.svn$"
+            "\.svn$"
     ],
 
     /**
@@ -120,12 +117,11 @@
     /**
      * List of package names to require for the cmd build process
      */
-    "requires": [
-    ],
+    "requires": [],
 
     /**
      * Uniquely generated id for this application, used as prefix for localStorage keys.
      * Normally you should never change this value.
      */
-    "id": "c33d1d10-9088-4ac5-867b-7e6581c2a0b4"
+    "id": "85a10992-663d-453e-b6c5-0f7d62e10c9b"
 }

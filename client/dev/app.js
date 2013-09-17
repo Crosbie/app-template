@@ -20,7 +20,7 @@ Ext.Loader.setPath({
 //</debug>
 
 Ext.application({
-    name: 'appTemplate',
+    name: 'AppTemplate',
 
     requires: [
         'Ext.MessageBox'
@@ -28,18 +28,28 @@ Ext.application({
 
     views: [
         'Main',
-        'Sidebar'
-    ],
-
-    controllers: [
-        'Main'
+        'Home',
+        'Profile',
+        'FlyOutNav',
+        'About',
+        'QuickTour',
+        'Communication',
+        'MyList'
     ],
 
     stores: [
-        'FlyOutNav'
+        'FlyOutNav',
+        'MyStore'
     ],
 
     models: [
+        'FlyOutNav',
+        'MyListModel'
+    ],
+    controllers: [
+        'Profile',
+        'Util',
+        'Home',
         'FlyOutNav'
     ],
 
@@ -62,22 +72,14 @@ Ext.application({
     },
 
     launch: function() {
-        // Destroy the #appLoadingIndicator element
-        Ext.fly('appLoadingIndicator').destroy();
-
+        var me = this;
         // Initialize the main view
-        Ext.Viewport.add(Ext.create('appTemplate.view.Main'));
-    },
+        Ext.Viewport.add(Ext.create('AppTemplate.view.Main'));
+        this.getApplication().getController('FlyOutNav').initSideBar();
+        this.getApplication().getController('Profile').checkLocalProfile();
 
-    onUpdated: function() {
-        Ext.Msg.confirm(
-            "Application Update",
-            "This application has just successfully been updated to the latest version. Reload now?",
-            function(buttonId) {
-                if (buttonId === 'yes') {
-                    window.location.reload();
-                }
-            }
-        );
+        document.addEventListener('resume', function() {
+            // functions to call on resume of app (minimize/maximize)
+        });
     }
 });

@@ -91,7 +91,7 @@ Ext.define('Ext.field.Radio', {
     // @private
     onMaskTap: function(component, e) {
         var me = this,
-            dom = me.getComponent().input.dom;
+            dom = component.input.dom;
 
         if (me.getDisabled()) {
             return false;

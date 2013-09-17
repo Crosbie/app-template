@@ -28,7 +28,7 @@ Ext.define('Ext.fx.Animation', {
         }
 
         if (type) {
-            if (Ext.browser.is.AndroidStock2) {
+            if (Ext.os.is.Android2) {
                 if (type == 'pop') {
                     type = 'fade';
                 }

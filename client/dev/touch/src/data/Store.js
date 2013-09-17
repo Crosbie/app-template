@@ -475,7 +475,6 @@ Ext.define('Ext.data.Store', {
 
         /**
          * @cfg {String} model
-         * Returns Ext.data.Model and not a String.
          * Name of the {@link Ext.data.Model Model} associated with this store.
          * The string is used as an argument for {@link Ext.ModelManager#getModel}.
          * @accessor
@@ -491,8 +490,7 @@ Ext.define('Ext.data.Store', {
 
         /**
          * @cfg {Object[]} fields
-         * Returns Ext.util.Collection not just an Object.
-         * Use in place of specifying a {@link #model} configuration. The fields should be a
+         * This may be used in place of specifying a {@link #model} configuration. The fields should be a
          * set of {@link Ext.data.Field} configuration objects. The store will automatically create a {@link Ext.data.Model}
          * with these fields. In general this configuration option should be avoided, it exists for the purposes of
          * backwards compatibility. For anything more complicated, such as specifying a particular id property or
@@ -547,7 +545,7 @@ Ext.define('Ext.data.Store', {
         sorters: null,
 
         /**
-         * @cfg {Object} grouper
+         * @cfg {Object[]} grouper
          * A configuration object for this Store's {@link Ext.util.Grouper grouper}.
          *
          * For example, to group a store's items by the first letter of the last name:
@@ -747,7 +745,6 @@ Ext.define('Ext.data.Store', {
                     extend: 'Ext.data.Model',
                     config: {
                         fields: fields,
-                        useCache: false,
                         proxy: this.getProxy()
                     }
                 });
@@ -796,15 +793,12 @@ Ext.define('Ext.data.Store', {
         return proxy;
     },
 
-    updateProxy: function(proxy, oldProxy) {
+    updateProxy: function(proxy) {
         if (proxy) {
             if (!proxy.getModel()) {
                 proxy.setModel(this.getModel());
             }
-            proxy.on('metachange', 'onMetaChange', this);
-        }
-        if (oldProxy) {
-            proxy.un('metachange', 'onMetaChange', this);
+            proxy.on('metachange', this.onMetaChange, this);
         }
     },
 
@@ -931,7 +925,7 @@ Ext.define('Ext.data.Store', {
             };
         }
 
-        grouper = Ext.factory(grouper, Ext.util.Grouper);
+        grouper = Ext.factory(grouper, Ext.util.Grouper, this.getGrouper());
         return grouper;
     },
 
@@ -954,9 +948,6 @@ Ext.define('Ext.data.Store', {
                     }
                 });
             }
-        }
-        if (oldGrouper) {
-            this.fireEvent('refresh', this, data);
         }
     },
 
@@ -1123,7 +1114,7 @@ Ext.define('Ext.data.Store', {
             removed = [],
             isPhantom,
             items = me.data.items,
-            record, index;
+            record, index, j;
 
         for (; i < ln; i++) {
             record = records[i];
@@ -1173,7 +1164,7 @@ Ext.define('Ext.data.Store', {
 
     /**
      * Remove all items from the store.
-     * @param {Boolean} [silent] Prevent the `clear` event from being fired.
+     * @param {Boolean} silent Prevent the `clear` event from being fired.
      */
     removeAll: function(silent) {
         if (silent !== true && this.eventFiringSuspended !== true) {
@@ -1281,8 +1272,7 @@ Ext.define('Ext.data.Store', {
     },
 
     /**
-     * Returns a range of Records between specified indices. Note that if the store is filtered, only filtered results
-     * are returned.
+     * Returns a range of Records between specified indices.
      * @param {Number} [startIndex=0] (optional) The starting index.
      * @param {Number} [endIndex=-1] (optional) The ending index (defaults to the last Record in the Store).
      * @return {Ext.data.Model[]} An array of Records.
@@ -1325,7 +1315,6 @@ Ext.define('Ext.data.Store', {
      * A model instance should call this method on the Store it has been {@link Ext.data.Model#join joined} to.
      * @param {Ext.data.Model} record The model instance that was edited.
      * @param {String[]} modifiedFieldNames Array of field names changed during edit.
-     * @param {Object} modified
      */
     afterEdit: function(record, modifiedFieldNames, modified) {
         var me = this,
@@ -1374,8 +1363,6 @@ Ext.define('Ext.data.Store', {
      * @private
      * A model instance should call this method on the Store it has been {@link Ext.data.Model#join joined} to.
      * @param {Ext.data.Model} record The model instance that was edited.
-     * @param {String[]} modifiedFieldNames
-     * @param {Object} modified
      */
     afterCommit: function(record, modifiedFieldNames, modified) {
         var me = this,
@@ -1420,21 +1407,6 @@ Ext.define('Ext.data.Store', {
             data.remove(record);
             me.fireEvent('removerecords', me, [record], [index]);
         }
-    },
-
-    applyRemoteFilter: function(value) {
-        var proxy = this.getProxy();
-        return value || (proxy && proxy.isSQLProxy  === true);
-    },
-
-    applyRemoteSort: function(value) {
-        var proxy = this.getProxy();
-        return value || (proxy && proxy.isSQLProxy  === true);
-    },
-
-    applyRemoteGroup: function(value) {
-        var proxy = this.getProxy();
-        return value || (proxy && proxy.isSQLProxy  === true);
     },
 
     updateRemoteFilter: function(remoteFilter) {
@@ -1580,7 +1552,7 @@ Ext.define('Ext.data.Store', {
                     anyMatch     : anyMatch,
                     caseSensitive: caseSensitive,
                     id           : property
-                };
+                }
             }
         }
 
@@ -1610,7 +1582,7 @@ Ext.define('Ext.data.Store', {
 
         data.filter({
             filterFn: function(record) {
-                return fn.call(scope || me, record, record.getId());
+                return fn.call(scope || me, record, record.getId())
             }
         });
 
@@ -1647,7 +1619,7 @@ Ext.define('Ext.data.Store', {
         }
         this.data.setFilters(null);
         if (suppressEvent) {
-            this.resumeEvents(true);
+            this.resumeEvents();
         } else if (ln !== this.data.length) {
             this.fireEvent('refresh', this, this.data);
         }
@@ -2160,7 +2132,7 @@ Ext.define('Ext.data.Store', {
             // Now lets add the records without firing an addrecords event
             me.suspendEvents();
             me.add(records);
-            me.resumeEvents(true); // true to discard the queue
+            me.resumeEvents();
         }
 
         me.fireEvent('refresh', me, data);
@@ -2299,18 +2271,7 @@ Ext.define('Ext.data.Store', {
     },
 
     destroy: function() {
-        this.clearData();
-        var proxy = this.getProxy();
-        if (proxy) {
-            proxy.onDestroy();
-        }
         Ext.data.StoreManager.unregister(this);
-
-        if (this.implicitModel && this.getModel()) {
-          delete Ext.data.ModelManager.types[this.getModel().getName()];
-        }
-        Ext.destroy(this.data);
-
         this.callParent(arguments);
     }
 

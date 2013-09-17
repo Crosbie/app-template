@@ -118,20 +118,8 @@ Ext.define('Ext.picker.Slot', {
             slotSnapEasing: {
                 duration: 100
             }
-        },
-
-        /**
-         * @cfg {Boolean} verticallyCenterItems
-         * @private
-         */
-        verticallyCenterItems: true
+        }
     },
-
-    platformConfig: [{
-        theme: ['Windows'],
-        title: 'choose an item'
-        // verticallyCenterItems: false
-    }],
 
     constructor: function() {
         /**
@@ -163,8 +151,8 @@ Ext.define('Ext.picker.Slot', {
             //create a new title element
             title = Ext.create('Ext.Component', {
                 cls: Ext.baseCSSPrefix + 'picker-slot-title',
-                docked: 'top',
-                html: title
+                docked      : 'top',
+                html        : title
             });
         }
 
@@ -183,11 +171,11 @@ Ext.define('Ext.picker.Slot', {
     },
 
     updateShowTitle: function(showTitle) {
-        var title = this.getTitle(),
-            mode = showTitle ? 'show' : 'hide';
+        var title = this.getTitle();
         if (title) {
-            title.on(mode, this.setupBar, this, { single: true, delay: 50 });
             title[showTitle ? 'show' : 'hide']();
+
+            this.setupBar();
         }
     },
 
@@ -293,7 +281,7 @@ Ext.define('Ext.picker.Slot', {
             titleHeight = 0,
             barHeight, padding;
 
-        barHeight = bar.dom.getBoundingClientRect().height;
+        barHeight = bar.getHeight();
 
         if (showTitle && title) {
             titleHeight = title.element.getHeight();
@@ -301,14 +289,13 @@ Ext.define('Ext.picker.Slot', {
 
         padding = Math.ceil((element.getHeight() - titleHeight - barHeight) / 2);
 
-        if (this.getVerticallyCenterItems()) {
-            innerElement.setStyle({
-                padding: padding + 'px 0 ' + padding + 'px'
-            });
-        }
+        innerElement.setStyle({
+            padding: padding + 'px 0 ' + (padding) + 'px'
+        });
 
         scroller.refresh();
         scroller.setSlotSnapSize(barHeight);
+
         this.setValue(value);
     },
 
@@ -337,7 +324,7 @@ Ext.define('Ext.picker.Slot', {
     // @private
     onScrollEnd: function(scroller, x, y) {
         var me = this,
-            index = Math.round(y / me.picker.bar.dom.getBoundingClientRect().height),
+            index = Math.round(y / me.picker.bar.getHeight()),
             viewItems = me.getViewItems(),
             item = viewItems[index];
 
@@ -373,6 +360,7 @@ Ext.define('Ext.picker.Slot', {
         record = store.getAt(this.selectedIndex);
 
         value = record ? record.get(this.getValueField()) : null;
+//        this._value = value;
 
         return value;
     },
@@ -394,6 +382,10 @@ Ext.define('Ext.picker.Slot', {
     },
 
     doSetValue: function(value, animated) {
+        if (!Ext.isDefined(value)) {
+            return;
+        }
+
         if (!this.rendered) {
             //we don't want to call this until the slot has been rendered
             this._value = value;
@@ -406,21 +398,17 @@ Ext.define('Ext.picker.Slot', {
             index, item;
 
         index = store.findExact(valueField, value);
+        if (index != -1) {
+            item = Ext.get(viewItems[index]);
 
-        if (index == -1) {
-            index = 0;
+            this.selectedIndex = index;
+            if (item) {
+                this.scrollToItem(item, (animated) ? {
+                    duration: 100
+                } : false);
+            }
+
+            this._value = value;
         }
-
-        item = Ext.get(viewItems[index]);
-
-        this.selectedIndex = index;
-        if (item) {
-            this.scrollToItem(item, (animated) ? {
-                duration: 100
-            } : false);
-            this.select(this.selectedIndex);
-        }
-
-        this._value = value;
     }
 });

@@ -5,7 +5,7 @@ Ext.define('Ext.util.paintmonitor.CssAnimation', {
 
     extend: 'Ext.util.paintmonitor.Abstract',
 
-    eventName: Ext.browser.is.WebKit ? 'webkitAnimationEnd' : 'animationend',
+    eventName: 'webkitAnimationEnd',
 
     monitorClass: 'cssanimation',
 

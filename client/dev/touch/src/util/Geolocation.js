@@ -5,7 +5,7 @@
  *
  * When instantiated, by default this class immediately begins tracking location information,
  * firing a {@link #locationupdate} event when new location information is available.  To disable this
- * location tracking (which may be battery intensive on mobile devices), set {@link #autoUpdate} to `false`.
+ * location tracking (which may be standards intensive on mobile devices), set {@link #autoUpdate} to `false`.
  *
  * When this is done, only calls to {@link #updateLocation} will trigger a location retrieval.
  *
@@ -307,18 +307,16 @@ Ext.define('Ext.util.Geolocation', {
      *
      * Will be called on both success and failure.
      *
-     * The method will be passed one parameter, {@link Ext.util.Geolocation}
-     * (**this** reference), set to `null` on failure.
+     * The method will be passed one parameter, {@link Ext.util.Geolocation} (**this** reference),
+     * set to `null` on failure.
      *
      *     geo.updateLocation(function (geo) {
      *         alert('Latitude: ' + (geo !== null ? geo.latitude : 'failed'));
      *     });
      *
-     * @param {Object} [scope]
-     * The scope (**this** reference) in which the handler function is executed.
+     * @param {Object} scope (optional) The scope (**this** reference) in which the handler function is executed.
      *
      * **If omitted, defaults to the object which fired the event.**
-     *
      * <!--positonOptions undocumented param, see W3C spec-->
      */
     updateLocation: function(callback, scope, positionOptions) {

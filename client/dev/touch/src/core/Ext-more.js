@@ -32,7 +32,7 @@
  *
  * [getting_started]: #!/guide/getting_started
  */
-Ext.setVersion('touch', '2.2.1');
+Ext.setVersion('touch', '2.1.1');
 
 Ext.apply(Ext, {
     /**
@@ -59,7 +59,7 @@ Ext.apply(Ext, {
     },
 
     /**
-     * Generates unique ids. If the element is passes and it already has an `id`, it is unchanged.
+     * Generates unique ids. If the element already has an `id`, it is unchanged.
      * @param {Mixed} el (optional) The element to generate an id for.
      * @param {String} [prefix=ext-gen] (optional) The `id` prefix.
      * @return {String} The generated `id`.
@@ -72,16 +72,16 @@ Ext.apply(Ext, {
         el = Ext.getDom(el) || {};
 
         if (el === document || el === document.documentElement) {
-            el.id = 'ext-app';
+            el.id = 'ext-application';
         }
         else if (el === document.body) {
-            el.id = 'ext-body';
+            el.id = 'ext-viewport';
         }
         else if (el === window) {
             el.id = 'ext-window';
         }
 
-        el.id = el.id || ((prefix || 'ext-') + (++Ext.idSeed));
+        el.id = el.id || ((prefix || 'ext-element-') + (++Ext.idSeed));
 
         return el.id;
     },
@@ -468,11 +468,11 @@ Ext.apply(Ext, {
      * Please note that there's no automatic fallback mechanism for the startup images. In other words, if you don't specify
      * a valid image for a certain device, nothing will be displayed while the application is being launched on that device.
      *
-     * @param {Boolean} config.isIconPrecomposed
+     * @param {Boolean} isIconPrecomposed
      * True to not having a glossy effect added to the icon by the OS, which will preserve its exact look. This currently
      * only applies to iOS devices.
      *
-     * @param {String} config.statusBarStyle
+     * @param {String} statusBarStyle
      * The style of status bar to be shown on applications added to the iOS home screen. Valid options are:
      *
      * * `default`
@@ -608,26 +608,10 @@ Ext.apply(Ext, {
                     Ext.require(requires, callback);
                 }
             });
-
-            if (!Ext.microloaded && navigator.userAgent.match(/IEMobile\/10\.0/)) {
-                var msViewportStyle = document.createElement("style");
-                msViewportStyle.appendChild(
-                    document.createTextNode(
-                        "@media screen and (orientation: portrait) {" +
-                            "@-ms-viewport {width: 320px !important;}" +
-                        "}" +
-                        "@media screen and (orientation: landscape) {" +
-                            "@-ms-viewport {width: 560px !important;}" +
-                        "}"
-                    )
-                );
-                head.appendChild(msViewportStyle);
-            }
         });
 
         function addMeta(name, content) {
             var meta = document.createElement('meta');
-
             meta.setAttribute('name', name);
             meta.setAttribute('content', content);
             head.append(meta);
@@ -659,7 +643,6 @@ Ext.apply(Ext, {
             statusBarStyle = config.statusBarStyle,
             devicePixelRatio = window.devicePixelRatio || 1;
 
-
         if (navigator.standalone) {
             addMeta('viewport', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0');
         }
@@ -668,9 +651,6 @@ Ext.apply(Ext, {
         }
         addMeta('apple-mobile-web-app-capable', 'yes');
         addMeta('apple-touch-fullscreen', 'yes');
-        if (Ext.browser.is.ie) {
-            addMeta('msapplication-tap-highlight', 'no');
-        }
 
         // status bar style
         if (statusBarStyle) {
@@ -1355,30 +1335,12 @@ Ext.apply(Ext, {
                 }
             }
             else {
-                var readyStateRe =  (/MSIE 10/.test(navigator.userAgent)) ? /complete|loaded/ : /interactive|complete|loaded/;
-                if (document.readyState.match(readyStateRe) !== null) {
+                if (document.readyState.match(/interactive|complete|loaded/) !== null) {
                     triggerFn();
                 }
                 else if (!Ext.readyListenerAttached) {
                     Ext.readyListenerAttached = true;
-                    window.addEventListener('DOMContentLoaded', function() {
-                        if (navigator.standalone) {
-                            // When running from Home Screen, the splash screen will not disappear until all
-                            // external resource requests finish.
-                            // The first timeout clears the splash screen
-                            // The second timeout allows inital HTML content to be displayed
-                            setTimeout(function() {
-                                setTimeout(function() {
-                                    triggerFn();
-                                }, 1);
-                            }, 1);
-                        }
-                        else {
-                          setTimeout(function() {
-                              triggerFn();
-                          }, 1);
-                        }
-                    }, false);
+                    window.addEventListener('DOMContentLoaded', triggerFn, false);
                 }
             }
         }

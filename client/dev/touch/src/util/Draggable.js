@@ -1,5 +1,5 @@
 /**
- * A core util class to bring Draggable behavior to a Component
+ * A core util class to bring Draggable behavior to any DOM element
  */
 Ext.define('Ext.util.Draggable', {
     isDraggable: true,
@@ -161,9 +161,7 @@ Ext.define('Ext.util.Draggable', {
 
     applyTranslatable: function(translatable, currentInstance) {
         translatable = Ext.factory(translatable, Ext.util.Translatable, currentInstance);
-        if (translatable) {
-            translatable.setElement(this.getElement());
-        }
+        translatable.setElement(this.getElement());
 
         return translatable;
     },

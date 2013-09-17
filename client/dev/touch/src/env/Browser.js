@@ -9,9 +9,7 @@
  * @private
  */
 Ext.define('Ext.env.Browser', {
-    requires: [
-        'Ext.Version'
-    ],
+    requires: ['Ext.Version'],
 
     statics: {
         browserNames: {
@@ -44,7 +42,7 @@ Ext.define('Ext.env.Browser', {
             firefox: 'Firefox/',
             chrome: 'Chrome/',
             safari: 'Version/',
-            opera: 'OPR/',
+            opera: 'Opera/',
             dolfin: 'Dolfin/',
             webosbrowser: 'wOSBrowser/',
             chromeMobile: 'CrMo/',
@@ -180,6 +178,10 @@ Ext.define('Ext.env.Browser', {
          */
         this.userAgent = userAgent;
 
+        is = this.is = function(name) {
+            return is[name] === true;
+        };
+
         var statics = this.statics(),
             browserMatch = userAgent.match(new RegExp('((?:' + Ext.Object.getValues(statics.browserPrefixes).join(')|(?:') + '))([\\w\\._]+)')),
             engineMatch = userAgent.match(new RegExp('((?:' + Ext.Object.getValues(statics.enginePrefixes).join(')|(?:') + '))([\\w\\._]+)')),
@@ -192,12 +194,9 @@ Ext.define('Ext.env.Browser', {
             isWebView = false,
             is, i, name;
 
-        is = this.is = function(name) {
-            return is[name] === true;
-        };
-
         if (browserMatch) {
             browserName = browserNames[Ext.Object.getKey(statics.browserPrefixes, browserMatch[1])];
+
             browserVersion = new Ext.Version(browserMatch[2]);
         }
 
@@ -215,12 +214,6 @@ Ext.define('Ext.env.Browser', {
 
         if (userAgent.match(/Android.*Chrome/g)) {
             browserName = 'ChromeMobile';
-        }
-
-        if (userAgent.match(/OPR/)) {
-            browserName = 'Opera';
-            browserMatch = userAgent.match(/OPR\/(\d+.\d+)/);
-            browserVersion = new Ext.Version(browserMatch[1]);
         }
 
         Ext.apply(this, {
@@ -262,13 +255,9 @@ Ext.define('Ext.env.Browser', {
 
         this.setFlag('Standalone', !!navigator.standalone);
 
-        this.setFlag('Ripple', !!document.getElementById("tinyhippos-injected") && !Ext.isEmpty(window.top.ripple));
-        this.setFlag('WebWorks', !!window.blackberry);
-
         if (typeof window.PhoneGap != 'undefined' || typeof window.Cordova != 'undefined' || typeof window.cordova != 'undefined') {
             isWebView = true;
             this.setFlag('PhoneGap');
-            this.setFlag('Cordova');
         }
         else if (!!window.isNK) {
             isWebView = true;
@@ -314,19 +303,6 @@ Ext.define('Ext.env.Browser', {
         }
 
         return name;
-    },
-
-    getPreferredTranslationMethod: function(config) {
-        if (typeof config == 'object' && 'translationMethod' in config && config.translationMethod !== 'auto') {
-            return config.translationMethod;
-        } else {
-            if (this.is.AndroidStock2 || this.is.IE) {
-                return 'scrollposition';
-            }
-            else {
-                return 'csstransform';
-            }
-        }
     }
 
 }, function() {

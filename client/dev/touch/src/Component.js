@@ -669,7 +669,7 @@ Ext.define('Ext.Component', {
         tplWriteMode: 'overwrite',
 
         /**
-         * @cfg {Object} data
+         * @cfg {Mixed} data
          * The initial set of data to apply to the `{@link #tpl}` to
          * update the content area of the Component.
          * @accessor
@@ -828,11 +828,6 @@ Ext.define('Ext.Component', {
      * Fires whenever there is a change in the floating status of a component
      * @param {Ext.Component} this The component instance
      * @param {Boolean} floating The component's new floating state
-     */
-
-    /**
-     * @event destroy
-     * Fires when the component is destroyed
      */
 
     /**
@@ -1059,6 +1054,8 @@ Ext.define('Ext.Component', {
 
     /**
      * @private
+     * @param fn
+     * @param scope
      */
     onInitialized: function(fn, scope, args) {
         var listeners = this.onInitializedListeners;
@@ -1179,23 +1176,15 @@ Ext.define('Ext.Component', {
     },
 
     updateUi: function(newUi, oldUi) {
-        var baseCls = this.getBaseCls(),
-            element = this.element,
-            currentUi = this.currentUi;
+        var baseCls = this.getBaseCls();
 
         if (baseCls) {
             if (oldUi) {
-                if (currentUi) {
-                    element.removeCls(currentUi);
-                }
-                else {
-                    element.removeCls(baseCls + '-' + oldUi);
-                }
+                this.element.removeCls(oldUi, baseCls);
             }
 
             if (newUi) {
-                element.addCls(newUi, baseCls);
-                this.currentUi = baseCls + '-' + newUi;
+                this.element.addCls(newUi, baseCls);
             }
         }
     },
@@ -1208,21 +1197,19 @@ Ext.define('Ext.Component', {
         var me = this,
             ui = me.getUi();
 
-
-        if (oldBaseCls) {
-            this.element.removeCls(oldBaseCls);
-
-            if (ui) {
-                this.element.removeCls(this.currentUi);
-            }
-        }
-
         if (newBaseCls) {
             this.element.addCls(newBaseCls);
 
             if (ui) {
                 this.element.addCls(newBaseCls, null, ui);
-                this.currentUi = newBaseCls + '-' + ui;
+            }
+        }
+
+        if (oldBaseCls) {
+            this.element.removeCls(oldBaseCls);
+
+            if (ui) {
+                this.element.removeCls(oldBaseCls, null, ui);
             }
         }
     },
@@ -1485,6 +1472,14 @@ Ext.define('Ext.Component', {
         }
     },
 
+    filterPositionValue: function(value) {
+        if (value === '' || value === 'auto') {
+            value = null;
+        }
+
+        return value;
+    },
+
     filterLengthValue: function(value) {
         if (value === 'auto' || (!value && value !== 0)) {
             return null;
@@ -1494,19 +1489,19 @@ Ext.define('Ext.Component', {
     },
 
     applyTop: function(top) {
-        return this.filterLengthValue(top);
+        return this.filterPositionValue(top);
     },
 
     applyRight: function(right) {
-        return this.filterLengthValue(right);
+        return this.filterPositionValue(right);
     },
 
     applyBottom: function(bottom) {
-        return this.filterLengthValue(bottom);
+        return this.filterPositionValue(bottom);
     },
 
     applyLeft: function(left) {
-        return this.filterLengthValue(left);
+        return this.filterPositionValue(left);
     },
 
     applyWidth: function(width) {
@@ -1587,7 +1582,7 @@ Ext.define('Ext.Component', {
     doRefreshSizeState: function() {
         var hasWidth = this.getWidth() !== null || this.widthLayoutSized || (this.getLeft() !== null && this.getRight() !== null),
             hasHeight = this.getHeight() !== null || this.heightLayoutSized || (this.getTop() !== null && this.getBottom() !== null),
-            stretched = this.layoutStretched || this.hasCSSMinHeight || (!hasHeight && this.getMinHeight() !== null),
+            stretched = this.layoutStretched || (!hasHeight && this.getMinHeight() !== null),
             state = hasWidth && hasHeight,
             flags = (hasWidth && this.LAYOUT_WIDTH) | (hasHeight && this.LAYOUT_HEIGHT) | (stretched && this.LAYOUT_STRETCHED);
 
@@ -1610,24 +1605,6 @@ Ext.define('Ext.Component', {
     setSizeFlags: function(flags) {
         if (flags !== this.sizeFlags) {
             this.sizeFlags = flags;
-
-            var hasWidth = !!(flags & this.LAYOUT_WIDTH),
-                hasHeight = !!(flags & this.LAYOUT_HEIGHT),
-                stretched = !!(flags & this.LAYOUT_STRETCHED);
-
-            if (hasWidth && !stretched && !hasHeight) {
-                this.element.addCls('x-has-width');
-            }
-            else {
-                this.element.removeCls('x-has-width');
-            }
-
-            if (hasHeight && !stretched && !hasWidth) {
-                this.element.addCls('x-has-height');
-            }
-            else {
-                this.element.removeCls('x-has-height');
-            }
 
             if (this.initialized) {
                 this.fireEvent('sizeflagschange', this, flags);

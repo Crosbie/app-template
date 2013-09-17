@@ -2,7 +2,7 @@
  * @private
  */
 Ext.define('Ext.device.contacts.Abstract', {
-    mixins: ['Ext.mixin.Observable'],
+    extend: 'Ext.Evented',
 
     config: {
         /**

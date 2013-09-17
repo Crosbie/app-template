@@ -13,10 +13,8 @@
  * Using {@link Ext.util.DelayedTask} is very simple:
  *
  *     //create the delayed task instance with our callback
- *     var task = Ext.create('Ext.util.DelayedTask', {
- *          fn: function() {
- *             console.log('callback!');
- *          }
+ *     var task = Ext.create('Ext.util.DelayedTask', function() {
+ *         console.log('callback!');
  *     });
  *
  *     task.delay(1500); //the callback function will now be called after 1500ms
@@ -92,24 +90,14 @@ Ext.define('Ext.util.DelayedTask', {
 
         //cancel any existing queued functions
         me.cancel();
-
+            
         //set all the new configurations
-
-        if (Ext.isNumber(delay)) {
-            me.setDelay(delay);
-        }
-
-        if (Ext.isFunction(newFn)) {
-            me.setFn(newFn);
-        }
-
-        if (newScope) {
-            me.setScope(newScope);
-        }
-
-        if (newScope) {
-            me.setArgs(newArgs);
-        }
+        me.setConfig({
+            delay: delay,
+            fn: newFn,
+            scope: newScope,
+            args: newArgs
+        });
 
         //create the callback method for this delayed task
         var call = function() {

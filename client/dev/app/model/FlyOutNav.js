@@ -1,9 +1,19 @@
-Ext.define('appTemplate.model.FlyOutNav', {
+Ext.define('AppTemplate.model.FlyOutNav', {
     extend: 'Ext.data.Model',
     config: {
         fields: [
             'title',
-            'group'
+            'id',
+            'group',
+            'iconUrl',
+            'panelPath',
+            'showBy',
+            'selectable',
+            'position',
+            'name',
+            'modal',
+            'ifHome',
+            'url'
         ]
     }
 });

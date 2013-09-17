@@ -536,7 +536,7 @@ Ext.define('Ext.dataview.DataView', {
      * Function which can be overridden to provide custom formatting for each Record that is used by this
      * DataView's {@link #tpl template} to render each node.
      * @param {Object/Object[]} data The raw data object that was used to create the Record.
-     * @param {Number} index the index number of the Record being prepared for rendering.
+     * @param {Number} recordIndex the index number of the Record being prepared for rendering.
      * @param {Ext.data.Model} record The Record being prepared for rendering.
      * @return {Array/Object} The formatted data in a format expected by the internal {@link #tpl template}'s `overwrite()` method.
      * (either an array if your params are numeric (i.e. `{0}`) or an object (i.e. `{foo: 'bar'}`))
@@ -568,11 +568,7 @@ Ext.define('Ext.dataview.DataView', {
             item = Ext.get(item);
         }
         if (item) {
-            if (item.isComponent) {
-                item.renderElement.addCls(me.getPressedCls());
-            } else {
-                item.addCls(me.getPressedCls());
-            }
+            item.addCls(me.getPressedCls());
         }
     },
 
@@ -608,11 +604,7 @@ Ext.define('Ext.dataview.DataView', {
         }
 
         if (record && target) {
-            if (target.isComponent) {
-                target.renderElement.removeCls(me.getPressedCls());
-            } else {
-                target.removeCls(me.getPressedCls());
-            }
+            target.removeCls(me.getPressedCls());
         }
 
         me.fireEvent('itemtouchend', me, index, target, record, e);
@@ -629,11 +621,7 @@ Ext.define('Ext.dataview.DataView', {
         }
 
         if (record && target) {
-            if (target.isComponent) {
-                target.renderElement.removeCls(me.getPressedCls());
-            } else {
-                target.removeCls(me.getPressedCls());
-            }
+            target.removeCls(me.getPressedCls());
         }
         me.fireEvent('itemtouchmove', me, index, target, record, e);
     },
@@ -696,13 +684,8 @@ Ext.define('Ext.dataview.DataView', {
                 item = Ext.get(item);
             }
             if (item) {
-                if (item.isComponent) {
-                    item.renderElement.removeCls(me.getPressedCls());
-                    item.renderElement.addCls(me.getSelectedCls());
-                } else {
-                    item.removeCls(me.getPressedCls());
-                    item.addCls(me.getSelectedCls());
-                }
+                item.removeCls(me.getPressedCls());
+                item.addCls(me.getSelectedCls());
             }
         }
     },
@@ -728,11 +711,7 @@ Ext.define('Ext.dataview.DataView', {
         }
 
         if (item) {
-            if (item.isComponent) {
-                item.renderElement.removeCls([me.getPressedCls(), me.getSelectedCls()]);
-            } else {
-                item.removeCls([me.getPressedCls(), me.getSelectedCls()]);
-            }
+            item.removeCls([me.getPressedCls(), me.getSelectedCls()]);
         }
     },
 
@@ -789,16 +768,12 @@ Ext.define('Ext.dataview.DataView', {
             proxy, reader;
 
         if (oldStore && Ext.isObject(oldStore) && oldStore.isStore) {
-            oldStore.un(bindEvents);
-
-            if (!me.isDestroyed) {
-                me.onStoreClear();
-            }
-
+            me.onStoreClear();
             if (oldStore.getAutoDestroy()) {
                 oldStore.destroy();
             }
             else {
+                oldStore.un(bindEvents);
                 proxy = oldStore.getProxy();
                 if (proxy) {
                     reader = proxy.getReader();
@@ -988,19 +963,11 @@ Ext.define('Ext.dataview.DataView', {
     },
 
     destroy: function() {
-        var store = this.getStore(),
-            proxy = (store && store.getProxy()),
-            reader = (proxy && proxy.getReader());
-
-        if (reader) {
-            // TODO: Use un() instead of clearListeners() when TOUCH-2723 is fixed.
-//          reader.un('exception', 'handleException', this);
-            reader.clearListeners();
+        var store = this.getStore();
+        if (store && store.getAutoDestroy()) {
+            store.destroy();
         }
-
         this.callParent(arguments);
-
-        this.setStore(null);
     },
 
     onStoreClear: function() {
@@ -1048,8 +1015,7 @@ Ext.define('Ext.dataview.DataView', {
      */
     onStoreUpdate: function(store, record, newIndex, oldIndex) {
         var me = this,
-            container = me.container,
-            item;
+            container = me.container;
 
         oldIndex = (typeof oldIndex === 'undefined') ? newIndex : oldIndex;
 
@@ -1060,11 +1026,8 @@ Ext.define('Ext.dataview.DataView', {
             }
         }
         else {
-            item = me.getViewItems()[newIndex];
-            if (item) {
-                // Bypassing setter because sometimes we pass the same record (different data)
-                container.updateListItem(record, item);
-            }
+            // Bypassing setter because sometimes we pass the same record (different data)
+            container.updateListItem(record, me.getViewItems()[newIndex]);
         }
     }
     //<deprecated product=touch since=2.0>

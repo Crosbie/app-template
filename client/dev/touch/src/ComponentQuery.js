@@ -364,7 +364,7 @@ Ext.define('Ext.ComponentQuery', {
          * @param {Ext.Container} root The Container within which to perform the query.
          * If omitted, all Components within the document are included in the search.
          *
-         * This parameter may also be an array of Components to filter according to the selector.
+         * This parameter may also be an array of Components to filter according to the selector.</p>
          * @return {Ext.Component[]} The matched Components.
          *
          * @member Ext.ComponentQuery

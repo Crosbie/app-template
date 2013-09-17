@@ -1,32 +1,53 @@
-Ext.define('appTemplate.store.FlyOutNav', {
+Ext.define('AppTemplate.store.FlyOutNav', {
     extend: 'Ext.data.Store',
     config: {
-        model: 'appTemplate.model.FlyOutNav',
+        model: 'AppTemplate.model.FlyOutNav',
         data: [{
-                title: 'Home',
-                group: '1'
-            }, {
-                title: 'Edit Profile',
-                group: '2'
-            }
-        ],
-        grouper: {
-            groupFn: function(record) {
-                var text = record.get('group');
-                if (text == '1') {
-                    text = "Group 1";
-                } else if (text == '2') {
-                    text = "Group 2";
-                } else if (text == '3') {
-                    text = "Group 3";
-                } else if (text == '4') {
-                    text = "Group 4";
-                }
-                return text;
-            },
-            sortProperty: 'type',
-            direction: 'DESC'
+            title: 'Home',
+            iconUrl: 'home',
+            group: '1',
+            panelPath: 'AppTemplate.view.Home',
+            position: 1,
+            name: 'home'
+        }, {
+            title: 'Profile',
+            iconUrl: 'user',
+            group: '2',
+            panelPath: 'AppTemplate.view.Profile',
+            position: 2,
+            modal: true,
+            name: 'profile'
+        },{
+            title: 'My List',
+            group: '2',
+            iconUrl: 'doc',
+            panelPath: 'AppTemplate.view.MyList',
+            position: 4,
+            name: 'myList'
+        }, {
+            title: 'Quick Tour',
+            iconUrl: 'doc2',
+            group: '3',
+            panelPath: 'AppTemplate.view.QuickTour',
+            position: 6,
+            name: 'quickTour'
+        }, {
+            title: 'Communication',
+            iconUrl: 'comms',
+            group: '3',
+            panelPath: 'AppTemplate.view.Communication',
+            position: 7,
+            name: 'Communication',
+        },{
+            title: 'About',
+            iconUrl: 'about',
+            group: '3',
+            panelPath: 'AppTemplate.view.About',
+            position: 9,
+            name: 'about'
         }
+
+        ],
     }
 
 });

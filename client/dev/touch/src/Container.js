@@ -125,17 +125,17 @@ Ext.define('Ext.Container', {
     /**
      * @event activate
      * Fires whenever item within the Container is activated.
-     * @param {Object} newActiveItem The new active item within the container.
      * @param {Ext.Container} this The Container instance.
+     * @param {Object} newActiveItem The new active item within the container.
      * @param {Object} oldActiveItem The old active item within the container.
      */
 
     /**
      * @event deactivate
      * Fires whenever item within the Container is deactivated.
-     * @param {Object} oldActiveItem The old active item within the container.
      * @param {Ext.Container} this The Container instance.
      * @param {Object} newActiveItem The new active item within the container.
+     * @param {Object} oldActiveItem The old active item within the container.
      */
 
     eventedConfig: {
@@ -361,7 +361,8 @@ Ext.define('Ext.Container', {
      * Changes the {@link #masked} configuration when its setter is called, which will convert the value
      * into a proper object/instance of {@link Ext.Mask}/{@link Ext.LoadMask}. If a mask already exists,
      * it will use that instead.
-     * @param {Boolean/Object/Ext.Mask/Ext.LoadMask} masked
+     * @param masked
+     * @param currentMask
      * @return {Object}
      */
     applyMasked: function(masked) {
@@ -673,22 +674,17 @@ Ext.define('Ext.Container', {
         var me = this,
             i, ln, item, newActiveItem;
 
-        if (Ext.isArray(newItems)) {
-            for (i = 0, ln = newItems.length; i < ln; i++) {
-                item = me.factoryItem(newItems[i]);
-                this.doAdd(item);
-                if (!newActiveItem && !this.getActiveItem() && this.innerItems.length > 0 && item.isInnerItem()) {
-                    newActiveItem = item;
-                }
-            }
-        } else {
-            item = me.factoryItem(newItems);
+        newItems = Ext.Array.from(newItems);
+
+        ln = newItems.length;
+
+        for (i = 0; i < ln; i++) {
+            item = me.factoryItem(newItems[i]);
             this.doAdd(item);
             if (!newActiveItem && !this.getActiveItem() && this.innerItems.length > 0 && item.isInnerItem()) {
                 newActiveItem = item;
             }
         }
-
         if (newActiveItem) {
             this.setActiveItem(newActiveItem);
         }
@@ -722,8 +718,7 @@ Ext.define('Ext.Container', {
     /**
      * Removes an item from this Container, optionally destroying it.
      * @param {Object} item The item to remove.
-     * @param {Boolean} [destroy] Calls the Component's {@link Ext.Component#method-destroy destroy}
-     * method if `true`.
+     * @param {Boolean} destroy Calls the Component's {@link Ext.Component#destroy destroy} method if `true`.
      * @return {Ext.Component} this
      */
     remove: function(item, destroy) {
@@ -787,10 +782,8 @@ Ext.define('Ext.Container', {
 
     /**
      * Removes all items currently in the Container, optionally destroying them all.
-     * @param {Boolean} destroy If `true`, {@link Ext.Component#method-destroy destroys}
-     * each removed Component.
-     * @param {Boolean} everything If `true`, completely remove all items including
-     * docked / centered and floating items.
+     * @param {Boolean} destroy If `true`, {@link Ext.Component#destroy destroys} each removed Component.
+     * @param {Boolean} everything If `true`, completely remove all items including docked / centered and floating items.
      * @return {Ext.Component} this
      */
     removeAll: function(destroy, everything) {
@@ -799,7 +792,7 @@ Ext.define('Ext.Container', {
             i = 0,
             item;
 
-        if (typeof destroy != 'boolean') {
+        if (destroy === undefined) {
             destroy = this.getAutoDestroy();
         }
 
@@ -813,6 +806,7 @@ Ext.define('Ext.Container', {
 
             if (item && (everything || item.isInnerItem())) {
                 this.doRemove(item, i, destroy);
+
                 i--;
                 ln--;
             }
@@ -959,12 +953,6 @@ Ext.define('Ext.Container', {
     insert: function(index, item) {
         var me = this,
             i;
-
-        //<debug error>
-        if (typeof index != 'number') {
-            Ext.Logger.error("Invalid index of '" + index + "', must be a valid number");
-        }
-        //</debug>
 
         if (Ext.isArray(item)) {
             for (i = item.length - 1; i >= 0; i--) {
@@ -1244,13 +1232,11 @@ Ext.define('Ext.Container', {
             defaultAnimation = layout.getAnimation();
             if (defaultAnimation) {
                 defaultAnimation.disable();
-            }
-            animation.on('animationend', function() {
-                if (defaultAnimation) {
+                animation.on('animationend', function() {
                     defaultAnimation.enable();
-                }
-                animation.destroy();
-            }, this);
+                    animation.destroy();
+                }, this);
+            }
         }
         return this.setActiveItem(activeItem);
     },
@@ -1316,7 +1302,7 @@ Ext.define('Ext.Container', {
     applyScrollable: function(config) {
         if (typeof config === 'boolean') {
             //<debug warn>
-            if (config === false && !(this.getHeight() !== null || this.heightLayoutSized || (this.getTop() !== null && this.getBottom() !== null))) {
+            if (config === false && !this.heightLayoutSized) {
                 Ext.Logger.warn("This container is set to scrollable: false but has no specified height. " +
                     "You may need to set the container to scrollable: null or provide a height.", this);
             }
@@ -1490,8 +1476,7 @@ Ext.define('Ext.Container', {
      * Removes a docked item from this Container.
      * @deprecated 2.0.0 Please use {@link #method-remove} instead.
      * @param {Object} item The item to remove.
-     * @param {Boolean} destroy Calls the Component's {@link Ext.Component#method-destroy destroy}
-     * method if `true`.
+     * @param {Boolean} destroy Calls the Component's {@link Ext.Component#destroy destroy} method if `true`.
      * @return {Ext.Component} this
      */
     Ext.deprecateClassMethod(this, 'removeDocked', 'remove');

@@ -2,45 +2,48 @@
  * @private
  */
 Ext.define('Ext.device.purchases.Sencha', {
-    requires: [
-        'Ext.data.Store'
-    ],
-
     /**
      * Checks if the current user is able to make payments.
      * 
      * ## Example
      * 
      *     Ext.device.Purchases.canMakePayments({
-     *         callback: function(flag) {
-     *             console.log(flag ? 'Yup! :)' : 'Nope! :(');
+     *         success: function() {
+     *             console.log('Yup! :)');
+     *         },
+     *         failure: function() {
+     *             console.log('Nope! :(');
      *         }
      *     });
      * 
      * @param {Object} config
-     * @param {Function} config.callback
-     * @param {Boolean} config.callback.flag whether current user is able to make payments.
+     * @param {Function} config.success
+     * @param {Function} config.failure
      * @param {Object} config.scope
      */
     canMakePayments: function(config) {
-        if (!config.callback) {
-            Ext.Logger.error('You must specify a `callback` for `#canMakePayments` to work.');
+        if (!config.success) {
+            Ext.Logger.error('You must specify a `success` callback for `#canMakePayments` to work.');
+            return false;
+        }
+
+        if (!config.failure) {
+            Ext.Logger.error('You must specify a `failure` callback for `#canMakePayments` to work.');
             return false;
         }
 
         Ext.device.Communicator.send({
             command: 'Purchase#canMakePayments',
             callbacks: {
-                callback: function(flag) {
-                    config.callback.call(config.scope || this, flag);
-                }
+                success: config.success,
+                failure: config.failure
             },
             scope: config.scope || this
         });
     },
 
     /**
-     * Returns a {@link Ext.data.Store} instance of all products available to purchase.
+     * Returns a {@link Ext.data.Store} instance of all the available products.
      * 
      * ## Example
      * 
@@ -54,9 +57,8 @@ Ext.define('Ext.device.purchases.Sencha', {
      *     });
      * 
      * @param {Object} config
-     * @param {Array[]} config.productInfos An array of all products productInfos
      * @param {Function} config.success
-     * @param {Ext.data.Store} config.success.store A store of all products available to purchase.
+     * @param {Ext.data.Store} config.success.store A store of products available to purchase.
      * @param {Function} config.failure
      * @param {Object} config.scope
      */
@@ -73,7 +75,6 @@ Ext.define('Ext.device.purchases.Sencha', {
 
         Ext.device.Communicator.send({
             command: 'Purchase#getProducts',
-            productInfos: JSON.stringify(config.productInfos),
             callbacks: {
                 success: function(products) {
                     var store = Ext.create('Ext.data.Store', {
@@ -90,36 +91,47 @@ Ext.define('Ext.device.purchases.Sencha', {
     },
 
     /**
-     * Returns a {@link Ext.data.Store} instance of all purchases delivered to the current user.
-     * 
+     * Returns all purchases ever made by this user.
      * @param {Object} config
-     * @param {Function} config.callback
-     * @param {Ext.data.Store} config.callback.store A store of all purchases delivered to the current user.
+     * @param {Function} config.success
+     * @param {Array[]} config.success.purchases
+     * @param {Function} config.failure
      * @param {Object} config.scope
      */
-    getCompletedPurchases: function(config) {
-        if (!config.callback) {
-            Ext.Logger.error('You must specify a `callback` for `#getCompletedPurchases` to work.');
+    getPurchases: function(config) {
+        if (!config.success) {
+            Ext.Logger.error('You must specify a `success` callback for `#getPurchases` to work.');
+            return false;
+        }
+
+        if (!config.failure) {
+            Ext.Logger.error('You must specify a `failure` callback for `#getPurchases` to work.');
             return false;
         }
 
         Ext.device.Communicator.send({
-            command: 'Purchase#getCompletedPurchases',
+            command: 'Purchase#getPurchases',
             callbacks: {
-                callback: function(purchases) {
-                    var ln = purchases.length,
+                success: function(purchases) {
+                    var array = [],
+                        ln = purchases.length,
                         i;
 
                     for (i = 0; i < ln; i++) {
-                        purchases[i].state = 'completed';
+                        array.push({
+                            productIdentifier: purchases[i]
+                        });
                     }
 
                     var store = Ext.create('Ext.data.Store', {
                         model: 'Ext.device.Purchases.Purchase',
-                        data: purchases
+                        data: array
                     });
 
-                    config.callback.call(config.scope || this, store);
+                    config.success.call(config.scope || this, store);
+                },
+                failure: function() {
+                    config.failure.call(config.scope || this);
                 }
             },
             scope: config.scope || this
@@ -127,36 +139,48 @@ Ext.define('Ext.device.purchases.Sencha', {
     },
 
     /**
-     * Returns a {@link Ext.data.Store} instance of all purchases the current user has been charged.
-     * 
+     * Returns all purchases that are currently pending.
      * @param {Object} config
-     * @param {Function} config.callback
-     * @param {Ext.data.Store} config.callback.store  A store of all purchases the current user has been charged.
+     * @param {Function} config.success
+     * @param {Ext.data.Store} config.success.purchases
+     * @param {Function} config.failure
      * @param {Object} config.scope
      */
-    getPurchases: function(config) {
-        if (!config.callback) {
-            Ext.Logger.error('You must specify a `callback` for `#getPurchases` to work.');
+    getPendingPurchases: function(config) {
+        if (!config.success) {
+            Ext.Logger.error('You must specify a `success` callback for `#getPendingPurchases` to work.');
+            return false;
+        }
+
+        if (!config.failure) {
+            Ext.Logger.error('You must specify a `failure` callback for `#getPendingPurchases` to work.');
             return false;
         }
 
         Ext.device.Communicator.send({
-            command: 'Purchase#getPurchases',
+            command: 'Purchase#getPendingPurchases',
             callbacks: {
-                callback: function(purchases) {
-                    var ln = purchases.length,
+                success: function(purchases) {
+                    var array = [],
+                        ln = purchases.length,
                         i;
 
                     for (i = 0; i < ln; i++) {
-                        purchases[i].state = 'charged';
+                        array.push({
+                            productIdentifier: purchases[i],
+                            state: 'pending'
+                        });
                     }
 
                     var store = Ext.create('Ext.data.Store', {
                         model: 'Ext.device.Purchases.Purchase',
-                        data: purchases
+                        data: array
                     });
 
-                    config.callback.call(config.scope || this, store);
+                    config.success.call(config.scope || this, store);
+                },
+                failure: function() {
+                    config.failure.call(config.scope || this);
                 }
             },
             scope: config.scope || this
@@ -164,17 +188,18 @@ Ext.define('Ext.device.purchases.Sencha', {
     }
 }, function() {
     /**
-     * The product model class which is used when fetching available products using {@link Ext.device.Purchases#getProducts}.
+     * The product model class which is uses when fetching available products using {@link Ext.device.Purchases#getProducts}.
      */
     Ext.define('Ext.device.Purchases.Product', {
         extend: 'Ext.data.Model',
 
         config: {
             fields: [
-                'productIdentifier',
-                'localizedTitle',
+                'localizeTitle',
                 'price',
-                'localizedDescription'
+                'priceLocale',
+                'localizedDescription',
+                'productIdentifier'
             ]
         },
 
@@ -185,10 +210,10 @@ Ext.define('Ext.device.purchases.Sencha', {
          * 
          *     product.purchase({
          *         success: function() {
-         *             console.log(product.get('localizedTitle') + ' purchased!');
+         *             console.log(product.get('title') + ' purchased!');
          *         },
          *         failure: function() {
-         *             console.log('Something went wrong while trying to purchase ' + product.get('localizedTitle'));
+         *             console.log('Something went wrong while trying to purchase ' + product.get('title'));
          *         }
          *     });
          * 
@@ -199,22 +224,22 @@ Ext.define('Ext.device.purchases.Sencha', {
          */
         purchase: function(config) {
             if (!config.success) {
-                Ext.Logger.error('You must specify a `success` callback for `#purchase` to work.');
+                Ext.Logger.error('You must specify a `success` callback for `#product` to work.');
                 return false;
             }
 
             if (!config.failure) {
-                Ext.Logger.error('You must specify a `failure` callback for `#purchase` to work.');
+                Ext.Logger.error('You must specify a `failure` callback for `#product` to work.');
                 return false;
             }
 
             Ext.device.Communicator.send({
                 command: 'Purchase#purchase',
-                identifier: this.get('productIdentifier'),
                 callbacks: {
                     success: config.success,
                     failure: config.failure
                 },
+                identifier: this.get('productIdentifier'),
                 scope: config.scope || this
             });
         }
@@ -229,7 +254,6 @@ Ext.define('Ext.device.purchases.Sencha', {
         config: {
             fields: [
                 'productIdentifier',
-                'transactionIdentifier',
                 'state'
             ]
         },
@@ -254,20 +278,20 @@ Ext.define('Ext.device.purchases.Sencha', {
                 return false;
             }
 
-            if (this.get('state') != 'charged') {
-                config.failure.call(config.scope || this, 'purchase is not charged');
+            if (this.get('state') != "pending") {
+                config.failure.call(config.scope || this, "purchase is not pending");
             }
 
             Ext.device.Communicator.send({
-                command: 'Purchase#complete',
-                identifier: me.get('transactionIdentifier'),
+                command: 'Purchase#completePurchase',
+                identifier: me.get('productIdentifier'),
                 callbacks: {
                     success: function() {
-                        me.set('state', 'completed');
+                        me.set('state', 'complete');
                         config.success.call(config.scope || this);
                     },
                     failure: function() {
-                        me.set('state', 'charged');
+                        me.set('state', 'pending');
                         config.failure.call(config.scope || this);
                     }
                 },

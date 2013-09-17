@@ -19,7 +19,7 @@
     </target>
 
     <target name="build" depends="init-sencha-cmd">
-        <property name="build.dir" location="${basedir}"/>
+        <property name="build.dir" location=""/>
         <property name="classpath.excludes"
                   value="auth2/Auth.js,scroller/Infinite.js,locale,platform/src"/>
         <!--

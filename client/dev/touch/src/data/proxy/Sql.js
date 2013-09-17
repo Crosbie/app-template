@@ -1,46 +1,10 @@
 /**
- * SQL proxy lets you store data in a SQL database.
- * The Sencha Touch SQL proxy outputs model data into an HTML5
- * local database using WebSQL. 
- * 
- * You can create a Store for the proxy, for example:
- * 
- * Ext.require(["Ext.data.proxy.Sql"]);
- * 
- * Ext.define("User", {
- *   extend: "Ext.data.model",
- *   config: {
- *     fields: [ "firstName", "lastName" ]
- *   }  
- * });
- * 
- * Ext.create("Ext.data.Store", {
- *   model" "User",
- *   storeId: "Users",
- *   proxy: {
- *     type: "sql""
- *   }
- * });
- * 
- * Ext.getStore("Users").add([{
- *   firstName: "Polly",
- *   lastName: "Hedra"
- * });
- * 
- * Ext.getStore("Users").sync();
- * 
- * To destroy a table use:
- * Ext.getStore("Users").getModel().getProxy().dropTable();
- * 
- * To recreate a table use:
- * Ext.data.Store.sync() or Ext.data.Model.save()
+ * SQL proxy.
  */
 Ext.define('Ext.data.proxy.Sql', {
     alias: 'proxy.sql',
     extend: 'Ext.data.proxy.Client',
     alternateClassName: 'Ext.data.proxy.SQL',
-
-    isSQLProxy: true,
 
     config: {
         /**
@@ -74,7 +38,7 @@ Ext.define('Ext.data.proxy.Sql', {
     },
 
     updateModel: function(model) {
-        if (model) {
+        if (model && !this.getTable()) {
             var modelName = model.modelName,
                 defaultDateFormat = this.getDefaultDateFormat(),
                 table = modelName.slice(modelName.lastIndexOf('.') + 1);
@@ -86,9 +50,7 @@ Ext.define('Ext.data.proxy.Sql', {
             });
 
             this.setUniqueIdStrategy(model.getIdentifier().isUnique);
-            if (!this.getTable()) {
-                this.setTable(table);
-            }
+            this.setTable(table);
             this.setColumns(this.getPersistedModelColumns(model));
         }
 
@@ -108,7 +70,7 @@ Ext.define('Ext.data.proxy.Sql', {
                 me.createTable(transaction);
             }
 
-            me.insertRecords(records, transaction, function(resultSet) {
+            me.insertRecords(records, transaction, function(resultSet, errors) {
                 if (operation.process(operation.getAction(), resultSet) === false) {
                     me.fireEvent('exception', this, operation);
                 }
@@ -155,7 +117,7 @@ Ext.define('Ext.data.proxy.Sql', {
                     me.fireEvent('exception', me, operation);
                 }
 
-                if (filters && filters.length) {
+                if (filters.length) {
                     filtered = Ext.create('Ext.util.Collection', function(record) {
                         return record.getId();
                     });
@@ -361,7 +323,7 @@ Ext.define('Ext.data.proxy.Sql', {
                 result.setCount(count);
 
                 if (typeof callback == 'function') {
-                    callback.call(scope || me, result);
+                    callback.call(scope || me, result)
                 }
             },
             function(transaction, errors) {
@@ -370,7 +332,7 @@ Ext.define('Ext.data.proxy.Sql', {
                 result.setCount(0);
 
                 if (typeof callback == 'function') {
-                    callback.call(scope || me, result);
+                    callback.call(scope || me, result)
                 }
             }
         );
@@ -586,15 +548,11 @@ Ext.define('Ext.data.proxy.Sql', {
             case 'float':
                 return 'REAL';
             case 'bool':
-                return 'NUMERIC';
+                return 'NUMERIC'
         }
     },
 
     writeDate: function (field, date) {
-        if (Ext.isEmpty(date)) {
-            return null;
-        }
-
         var dateFormat = field.getDateFormat() || this.getDefaultDateFormat();
         switch (dateFormat) {
             case 'timestamp':

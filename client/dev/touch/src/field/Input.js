@@ -132,7 +132,7 @@ Ext.define('Ext.field.Input', {
 
         /**
          * @cfg {Number} tabIndex The `tabIndex` for this field.
-         *
+         * 
          * __Note:__ This only applies to fields that are rendered, not those which are built via `applyTo`.
          * @accessor
          */
@@ -211,7 +211,7 @@ Ext.define('Ext.field.Input', {
          *     Ext.define('Ux.field.Pattern', {
          *         extend : 'Ext.field.Text',
          *         xtype  : 'patternfield',
-         *
+         *         
          *         config : {
          *             component : {
          *                 pattern : '[0-9]*'
@@ -257,14 +257,15 @@ Ext.define('Ext.field.Input', {
                 tag: this.tag
             },
             {
-                reference: 'mask',
-                classList: [this.config.maskCls]
-            },
-            {
                 reference: 'clearIcon',
                 cls: 'x-clear-icon'
             }
         ];
+
+        items.push({
+            reference: 'mask',
+            classList: [this.config.maskCls]
+        });
 
         return items;
     },
@@ -282,40 +283,20 @@ Ext.define('Ext.field.Input', {
             focus: 'onFocus',
             blur: 'onBlur',
             input: 'onInput',
-            paste: 'onPaste',
-            tap: 'onInputTap'
+            paste: 'onPaste'
         });
 
         me.mask.on({
-            scope: me,
-            tap: 'onMaskTap'
+            tap: 'onMaskTap',
+            scope: me
         });
 
         if (me.clearIcon) {
             me.clearIcon.on({
                 tap: 'onClearIconTap',
-                touchstart: 'onClearIconPress',
-                touchend: 'onClearIconRelease',
                 scope: me
             });
         }
-
-        // Hack for IE10. Seems like keyup event is not fired for 'enter' keyboard button, so we use keypress event instead to handle enter.
-        if(Ext.browser.is.ie && Ext.browser.version.major >=10){
-            me.input.on({
-                scope: me,
-                keypress: 'onKeyPress'
-            });
-        }
-    },
-
-    /**
-     * Manual Max Length processing is required for the stock "Browser" on Android
-     * @private
-     * @return {Boolean} 'true' if non-chrome browser is detected on Android
-     */
-    useManualMaxLength: function() {
-        return Boolean((Ext.os.is.Android && !Ext.browser.is.Chrome));
     },
 
     applyUseMask: function(useMask) {
@@ -460,9 +441,7 @@ Ext.define('Ext.field.Input', {
      * @private
      */
     updateMaxLength: function(newMaxLength) {
-        if (!this.useManualMaxLength()) {
-            this.updateFieldAttribute('maxlength', newMaxLength);
-        }
+        this.updateFieldAttribute('maxlength', newMaxLength);
     },
 
     /**
@@ -630,20 +609,6 @@ Ext.define('Ext.field.Input', {
     },
 
     // @private
-    onInputTap: function(e) {
-        this.fireAction('inputtap', [this, e], 'doInputTap');
-    },
-
-    // @private
-    doInputTap: function(me, e) {
-        if (me.getDisabled()) {
-            return false;
-        }
-
-        me.focus();
-    },
-
-    // @private
     onMaskTap: function(e) {
         this.fireAction('masktap', [this, e], 'doMaskTap');
     },
@@ -654,19 +619,20 @@ Ext.define('Ext.field.Input', {
             return false;
         }
 
-        me.focus();
+        me.maskCorrectionTimer = Ext.defer(me.showMask, 1000, me);
+        me.hideMask();
     },
 
     // @private
-    showMask: function() {
-        if (this.getUseMask()) {
+    showMask: function(e) {
+        if (this.mask) {
             this.mask.setStyle('display', 'block');
         }
     },
 
     // @private
-    hideMask: function() {
-        if (this.getUseMask()) {
+    hideMask: function(e) {
+        if (this.mask) {
             this.mask.setStyle('display', 'none');
         }
     },
@@ -723,12 +689,17 @@ Ext.define('Ext.field.Input', {
     doFocus: function(e) {
         var me = this;
 
-        me.hideMask();
+        if (me.mask) {
+            if (me.maskCorrectionTimer) {
+                clearTimeout(me.maskCorrectionTimer);
+            }
+            me.hideMask();
+        }
 
         if (!me.getIsFocused()) {
+            me.setIsFocused(true);
             me.setStartValue(me.getValue());
         }
-        me.setIsFocused(true);
     },
 
     onBlur: function(e) {
@@ -737,11 +708,9 @@ Ext.define('Ext.field.Input', {
 
     // @private
     doBlur: function(e) {
-        var me = this,
-            value = me.getValue(),
+        var me         = this,
+            value      = me.getValue(),
             startValue = me.getStartValue();
-
-        me.showMask();
 
         me.setIsFocused(false);
 
@@ -749,6 +718,7 @@ Ext.define('Ext.field.Input', {
             me.onChange(me, value, startValue);
         }
 
+        me.showMask();
     },
 
     // @private
@@ -762,36 +732,19 @@ Ext.define('Ext.field.Input', {
         }
     },
 
-    onClearIconPress: function() {
-        this.clearIcon.addCls(Ext.baseCSSPrefix + 'pressing');
-    },
-
-    onClearIconRelease: function() {
-        this.clearIcon.removeCls(Ext.baseCSSPrefix + 'pressing');
-    },
-
     onClick: function(e) {
         this.fireEvent('click', e);
     },
 
     onChange: function(me, value, startValue) {
-        if (this.useManualMaxLength()) {
-            this.trimValueToMaxLength();
-        }
         this.fireEvent('change', me, value, startValue);
     },
 
     onPaste: function(e) {
-        if (this.useManualMaxLength()) {
-            this.trimValueToMaxLength();
-        }
         this.fireEvent('paste', e);
     },
 
     onKeyUp: function(e) {
-        if (this.useManualMaxLength()) {
-            this.trimValueToMaxLength();
-        }
         this.fireEvent('keyup', e);
     },
 
@@ -820,24 +773,7 @@ Ext.define('Ext.field.Input', {
         }, 10);
     },
 
-    // Hack for IE10 mobile. Handle pressing 'enter' button and fire keyup event in this case.
-    onKeyPress: function(e) {
-        if(e.browserEvent.keyCode == 13){
-            this.fireEvent('keyup', e);
-        }
-    },
-
     onMouseDown: function(e) {
         this.fireEvent('mousedown', e);
-    },
-
-    trimValueToMaxLength: function() {
-        var maxLength = this.getMaxLength();
-        if (maxLength) {
-            var value = this.getValue();
-            if (value.length > this.getMaxLength()) {
-                this.setValue(value.slice(0, maxLength));
-            }
-        }
     }
 });

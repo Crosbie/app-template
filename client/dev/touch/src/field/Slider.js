@@ -170,7 +170,6 @@ Ext.define('Ext.field.Slider', {
         }
 
         this.callParent([config]);
-        this.updateMultipleState();
     },
 
     // @private
@@ -190,14 +189,6 @@ Ext.define('Ext.field.Slider', {
     // @private
     applyComponent: function(config) {
         return Ext.factory(config, Ext.slider.Slider);
-    },
-
-    // @private
-    updateComponent: function(component) {
-        this.callSuper(arguments);
-
-        component.setMinValue(this.getMinValue());
-        component.setMaxValue(this.getMaxValue());
     },
 
     onSliderChange: function() {
@@ -222,7 +213,6 @@ Ext.define('Ext.field.Slider', {
      */
     setValues: function(value) {
         this.setValue(value);
-        this.updateMultipleState();
     },
 
     /**
@@ -256,12 +246,5 @@ Ext.define('Ext.field.Slider', {
         }
 
         return this.getValue() !== this.originalValue;
-    },
-
-    updateMultipleState: function() {
-        var value = this.getValue();
-        if (value && value.length > 1) {
-            this.addCls(Ext.baseCSSPrefix + 'slider-multiple');
-        }
     }
 });

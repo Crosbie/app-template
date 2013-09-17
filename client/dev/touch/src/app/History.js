@@ -43,8 +43,8 @@ Ext.define('Ext.app.History', {
         }
 
         this.initConfig(config);
-        if (config && Ext.isEmpty(config.token)) {
-            this.setToken(window.location.hash.substr(1));
+        if (config && Ext.isEmpty(config.token)) { 
+            this.setToken(window.location.hash.substr(1)); 
         }
     },
 
@@ -55,9 +55,7 @@ Ext.define('Ext.app.History', {
      * @param {Boolean} silent Cancels the firing of the {@link #change} event if `true`.
      */
     add: function(action, silent) {
-        action = Ext.factory(action, Ext.app.Action);
-
-        this.getActions().push(action);
+        this.getActions().push(Ext.factory(action, Ext.app.Action));
 
         var url = action.getUrl();
 

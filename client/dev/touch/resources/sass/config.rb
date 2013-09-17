@@ -5,8 +5,7 @@ dir = File.dirname(__FILE__)
 load File.join(dir, '..', 'themes')
 
 # Compass configurations
-fonts_path = File.join(dir, '..', 'themes/fonts/')
-sass_path = dir
-css_path = File.join(dir, "..", "css")
-environment  = :development
+sass_path    = dir
+css_path     = File.join(dir, "..", "css")
+environment  = :production
 output_style = :compressed

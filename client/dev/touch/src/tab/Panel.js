@@ -120,6 +120,14 @@ Ext.define('Ext.tab.Panel', {
          */
     },
 
+    delegateListeners: {
+        delegate: '> component',
+        centeredchange: 'onItemCenteredChange',
+        dockedchange: 'onItemDockedChange',
+        floatingchange: 'onItemFloatingChange',
+        disabledchange: 'onItemDisabledChange'
+    },
+
     initialize: function() {
         this.callParent();
 
@@ -127,12 +135,6 @@ Ext.define('Ext.tab.Panel', {
             order: 'before',
             activetabchange: 'doTabChange',
             delegate: '> tabbar',
-            scope   : this
-        });
-
-        this.on({
-            disabledchange: 'onItemDisabledChange',
-            delegate: '> component',
             scope   : this
         });
     },

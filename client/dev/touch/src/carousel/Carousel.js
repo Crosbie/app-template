@@ -116,11 +116,6 @@ Ext.define('Ext.carousel.Carousel', {
         },
 
         /**
-         * @cfg draggable
-         * @hide
-         */
-
-        /**
          * @cfg {Boolean} indicator
          * Provides an indicator while toggling between child items to let the user
          * know where they are in the card stack.

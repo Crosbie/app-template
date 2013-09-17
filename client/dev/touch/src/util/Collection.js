@@ -228,7 +228,7 @@ Ext.define('Ext.util.Collection', {
     },
 
     /**
-     * Adds an item to the collection.
+     * Adds an item to the collection. Fires the {@link #add} event when complete.
      * @param {String} key
      *
      * The key to associate with the item, or the new item.
@@ -291,7 +291,7 @@ Ext.define('Ext.util.Collection', {
     },
 
     /**
-     * MixedCollection has a generic way to fetch keys if you implement getKey. The default implementation simply
+     * MixedCollection has a pdfviewer way to fetch keys if you implement getKey. The default implementation simply
      * returns **`item.id`** but you can provide your own implementation to return a different value as in the following
      * examples:
      *
@@ -399,7 +399,7 @@ Ext.define('Ext.util.Collection', {
         } else {
             if (filtered) {
                 if (me.getAutoFilter() && filterable.isFiltered.call(me, item)) {
-                    if (me.indexOf(oldItem) !== -1) {
+                    if (items.indexOf(oldItem) !== -1) {
                         Ext.Array.remove(items, oldItem);
                         Ext.Array.remove(keys, oldKey);
                         me.length--;
@@ -407,7 +407,7 @@ Ext.define('Ext.util.Collection', {
                     }
                     return null;
                 }
-                else if (me.indexOf(oldItem) === -1) {
+                else if (items.indexOf(oldItem) === -1) {
                     items.push(item);
                     keys.push(newKey);
                     me.indices[newKey] = me.length;
@@ -416,14 +416,11 @@ Ext.define('Ext.util.Collection', {
                 }
             }
 
-            index = me.indexOf(oldItem);
+            index = me.items.indexOf(oldItem);
 
             keys[index] = newKey;
             items[index] = item;
-
-            if (newKey !== oldKey) {
-                this.dirtyIndices = true;
-            }
+            this.dirtyIndices = true;
         }
 
         return returnItem;
@@ -431,8 +428,8 @@ Ext.define('Ext.util.Collection', {
 
     /**
      * Adds all elements of an Array or an Object to the collection.
-     * @param {Object/Array} addItems An Object containing properties which will be added to the collection, or an Array of
-     * values, each of which are added to the collection. Functions references will be added to the collection if {@link}
+     * @param {Object/Array} objs An Object containing properties which will be added to the collection, or an Array of
+     * values, each of which are added to the collection. Functions references will be added to the collection if {@link
      * Ext.util.MixedCollection#allowFunctions allowFunctions} has been set to `true`.
      */
     addAll: function(addItems) {
@@ -955,8 +952,8 @@ Ext.define('Ext.util.Collection', {
 
     /**
      * Returns a range of items in this collection
-     * @param {Number} [start=0] The starting index.
-     * @param {Number} [end=-1] The ending index. Defaults to the last item.
+     * @param {Number} [startIndex=0] The starting index.
+     * @param {Number} [endIndex=-1] The ending index. Defaults to the last item.
      * @return {Array} An array of items.
      */
     getRange: function(start, end) {

@@ -158,20 +158,8 @@ Ext.define('Ext.field.Select', {
          * @cfg
          * @inheritdoc
          */
-        name: 'picker',
-
-        /**
-         * @cfg {String} pickerSlotAlign
-         * The alignment of text in the picker created by this Select
-         * @private
-         */
-        pickerSlotAlign: 'center'
+        name: 'picker'
     },
-
-    platformConfig: [{
-        theme: ['Windows'],
-        pickerSlotAlign: 'left'
-    }],
 
     // @private
     initialize: function() {
@@ -185,9 +173,7 @@ Ext.define('Ext.field.Select', {
             masktap: 'onMaskTap'
         });
 
-        component.doMaskTap = Ext.emptyFn;
-
-        if (Ext.browser.is.AndroidStock2) {
+        if (Ext.os.is.Android2) {
             component.input.dom.disabled = true;
         }
     },
@@ -279,7 +265,7 @@ Ext.define('Ext.field.Select', {
         if (!this.picker) {
             this.picker = Ext.create('Ext.picker.Picker', Ext.apply({
                 slots: [{
-                    align       : this.getPickerSlotAlign(),
+                    align       : 'center',
                     name        : this.getName(),
                     valueField  : this.getValueField(),
                     displayField: this.getDisplayField(),
@@ -328,6 +314,10 @@ Ext.define('Ext.field.Select', {
 
     // @private
     onMaskTap: function() {
+        if (this.getDisabled()) {
+            return false;
+        }
+
         this.onFocus();
 
         return false;
@@ -374,7 +364,7 @@ Ext.define('Ext.field.Select', {
                 Ext.Viewport.add(listPanel);
             }
 
-            listPanel.showBy(this.getComponent(), null);
+            listPanel.showBy(this.getComponent(), (Ext.os.is.BlackBerry && Ext.os.version.getMajor() === 10) ? 't-b' : null);
             list.select(record, null, true);
         }
     },
@@ -409,7 +399,7 @@ Ext.define('Ext.field.Select', {
     onChange: function(component, newValue, oldValue) {
         var me = this,
             store = me.getStore(),
-            index = (store) ? store.find(me.getDisplayField(), oldValue, null, null, null, true) : -1,
+            index = (store) ? store.find(me.getDisplayField(), oldValue) : -1,
             valueField = me.getValueField(),
             record = (store) ? store.getAt(index) : null;
 
@@ -420,8 +410,7 @@ Ext.define('Ext.field.Select', {
 
     /**
      * Updates the underlying `<options>` list with new values.
-     *
-     * @param {Array} newOptions An array of options configurations to insert or append.
+     * @param {Array} options An array of options configurations to insert or append.
      *
      *     selectBox.setOptions([
      *         {text: 'First Option',  value: 'first'},
@@ -431,7 +420,6 @@ Ext.define('Ext.field.Select', {
      *
      * __Note:__ option object member names should correspond with defined {@link #valueField valueField} and
      * {@link #displayField displayField} values.
-     *
      * @return {Ext.field.Select} this
      */
     updateOptions: function(newOptions) {
@@ -515,10 +503,6 @@ Ext.define('Ext.field.Select', {
      * @private
      */
     doSetDisabled: function(disabled) {
-        var component = this.getComponent();
-        if (component) {
-            component.setDisabled(disabled);
-        }
         Ext.Component.prototype.doSetDisabled.apply(this, arguments);
     },
 
@@ -546,10 +530,6 @@ Ext.define('Ext.field.Select', {
     },
 
     onFocus: function(e) {
-        if (this.getDisabled()) {
-            return false;
-        }
-
         var component = this.getComponent();
         this.fireEvent('focus', this, e);
 
@@ -570,7 +550,5 @@ Ext.define('Ext.field.Select', {
         if (store && store.getAutoDestroy()) {
             Ext.destroy(store);
         }
-
-        Ext.destroy(this.listPanel, this.picker);
     }
 });

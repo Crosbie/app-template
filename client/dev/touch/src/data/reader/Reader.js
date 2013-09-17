@@ -466,7 +466,7 @@ Ext.define('Ext.data.reader.Reader', {
 
     /**
      * @private
-     * This will usually need to be implemented in a subclass. Given a generic data object (the type depends on the type
+     * This will usually need to be implemented in a subclass. Given a pdfviewer data object (the type depends on the type
      * of data we are reading), this function should return the object as configured by the Reader's 'rootProperty' meta data config.
      * See XmlReader's getRoot implementation for an example. By default the same data object will simply be returned.
      * @param {Object} data The data object

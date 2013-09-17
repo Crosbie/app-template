@@ -6,7 +6,9 @@
 Ext.define('Ext.util.translatable.ScrollPosition', {
     extend: 'Ext.util.translatable.Dom',
 
-    type: 'scrollposition',
+    wrapperWidth: 0,
+
+    wrapperHeight: 0,
 
     config: {
         useWrapper: true
@@ -24,10 +26,6 @@ Ext.define('Ext.util.translatable.ScrollPosition', {
                 return null;
             }
 
-            if (container.hasCls(Ext.baseCSSPrefix + 'translatable-hboxfix')) {
-                container = container.getParent();
-            }
-
             if (this.getUseWrapper()) {
                 wrapper = element.wrap();
             }
@@ -40,6 +38,7 @@ Ext.define('Ext.util.translatable.ScrollPosition', {
 
             this.wrapper = wrapper;
 
+            wrapper.on('resize', 'onWrapperResize', this);
             wrapper.on('painted', 'refresh', this);
 
             this.refresh();
@@ -56,13 +55,20 @@ Ext.define('Ext.util.translatable.ScrollPosition', {
             dom = wrapper.dom;
 
             if (typeof x == 'number') {
-                dom.scrollLeft = 500000 - x;
+                dom.scrollLeft = this.wrapperWidth - x;
             }
 
             if (typeof y == 'number') {
-                dom.scrollTop = 500000 - y;
+                dom.scrollTop = this.wrapperHeight - y;
             }
         }
+    },
+
+    onWrapperResize: function(wrapper, info) {
+        this.wrapperWidth = info.width;
+        this.wrapperHeight = info.height;
+
+        this.refresh();
     },
 
     destroy: function() {
@@ -76,10 +82,10 @@ Ext.define('Ext.util.translatable.ScrollPosition', {
                 }
                 element.removeCls('x-translatable');
             }
-            if (!wrapper.isDestroyed) {
-                wrapper.removeCls('x-translatable-container');
-                wrapper.un('painted', 'refresh', this);
-            }
+
+            wrapper.removeCls('x-translatable-container');
+            wrapper.un('resize', 'onWrapperResize', this);
+            wrapper.un('painted', 'refresh', this);
 
             delete this.wrapper;
             delete this._element;

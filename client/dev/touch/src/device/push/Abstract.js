@@ -100,7 +100,7 @@ Ext.define('Ext.device.push.Abstract', {
             Ext.Logger.error('Failed to pass a received callback. This is required.');
         }
 
-        if (config.type == null) {
+        if (!config.type) {
             Ext.Logger.error('Failed to pass a type. This is required.');
         }
 

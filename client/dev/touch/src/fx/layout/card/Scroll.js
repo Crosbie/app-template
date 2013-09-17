@@ -16,6 +16,8 @@ Ext.define('Ext.fx.layout.card.Scroll', {
 
     constructor: function(config) {
         this.initConfig(config);
+
+        this.doAnimationFrame = Ext.Function.bind(this.doAnimationFrame, this);
     },
 
     getEasing: function() {
@@ -117,7 +119,8 @@ Ext.define('Ext.fx.layout.card.Scroll', {
     startAnimation: function() {
         this.isAnimating = true;
         this.getEasing().setStartTime(Date.now());
-        Ext.AnimationQueue.start(this.doAnimationFrame, this);
+        this.timer = setInterval(this.doAnimationFrame, 20);
+        this.doAnimationFrame();
     },
 
     doAnimationFrame: function() {
@@ -159,7 +162,7 @@ Ext.define('Ext.fx.layout.card.Scroll', {
             newItem.renderElement[scroll](null);
         }
 
-        Ext.AnimationQueue.stop(this.doAnimationFrame, this);
+        clearInterval(me.timer);
         me.isAnimating = false;
         me.fireEvent('animationend', me);
     }

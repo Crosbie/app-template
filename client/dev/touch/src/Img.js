@@ -203,12 +203,6 @@ Ext.define('Ext.Img', {
 
     onError : function(e) {
         this.detachListeners();
-
-        // Attempt to set the src even though the error event fired.
-        if (this.getMode() === 'background') {
-            this.element.dom.style.backgroundImage = 'url("' + this.imageObject.src + '")';
-        }
-
         this.fireEvent('error', this, e);
     },
 

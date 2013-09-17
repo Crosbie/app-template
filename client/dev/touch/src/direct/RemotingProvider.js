@@ -326,8 +326,7 @@ Ext.define('Ext.direct.RemotingProvider', {
      * Configure a direct request.
      * @private
      * @param {String} action The action being executed.
-     * @param {Object} method The method being executed.
-     * @param {Array} args
+     * @param {Object} method The being executed.
      */
     configureRequest: function(action, method, args) {
         var me = this,

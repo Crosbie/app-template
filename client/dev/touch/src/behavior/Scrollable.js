@@ -25,7 +25,7 @@ Ext.define('Ext.behavior.Scrollable', {
     setConfig: function(config) {
         var scrollView = this.scrollView,
             component = this.component,
-            scrollerElement, extraWrap, scroller, direction;
+            scrollerElement;
 
         if (config) {
             if (!scrollView) {
@@ -35,32 +35,12 @@ Ext.define('Ext.behavior.Scrollable', {
                 component.setUseBodyElement(true);
 
                 this.scrollerElement = scrollerElement = component.innerElement;
-
-                if (!Ext.feature.has.ProperHBoxStretching) {
-                    scroller = scrollView.getScroller();
-                    direction = config.direction || 'auto';
-
-                    if (direction !== 'vertical') {
-                        extraWrap = scrollerElement.wrap();
-                        extraWrap.addCls(Ext.baseCSSPrefix + 'translatable-hboxfix');
-                        if (direction == 'horizontal') {
-                            extraWrap.setStyle({height: '100%'});
-                        }
-                        this.scrollContainer = extraWrap.wrap();
-                        scrollView.FixedHBoxStretching = scroller.FixedHBoxStretching = true;
-                    }
-                    else {
-                        this.scrollContainer = scrollerElement.wrap();
-                    }
-                }
-                else {
-                    this.scrollContainer = scrollerElement.wrap();
-                }
+                this.scrollContainer = scrollerElement.wrap();
 
                 scrollView.setElement(component.bodyElement);
 
                 if (component.isPainted()) {
-                    this.onComponentPainted();
+                    this.onComponentPainted(component);
                 }
 
                 component.on(this.listeners);

@@ -1,10 +1,342 @@
-// The following two lines import the default Sencha Touch theme. If you are building
-// a new theme, remove them and the add your own CSS on top of the base CSS (which
-// is already included in your app.json file).
-@import 'sencha-touch/default';
 @import 'sencha-touch/default/all';
 
-// Custom code goes here..
+// You may remove any of the following modules that you
+// do not use in order to create a smaller css file.
+@include sencha-panel;
+@include sencha-buttons;
+@include sencha-sheet;
+@include sencha-picker;
+@include sencha-tabs;
+@include sencha-toolbar;
+@include sencha-toolbar-forms;
+@include sencha-indexbar;
+@include sencha-list;
+@include sencha-layout;
+@include sencha-carousel;
+@include sencha-form;
+@include sencha-msgbox;
+@include sencha-loading-spinner;
 
-// Examples of using the icon mixin:
-// @include icon('user');
+
+
+/*#########################################
+        Fly Out Nav styling
+#########################################*/
+
+#navBtnFlyOutNav {
+  min-width: 44px !important;
+}
+
+#flyOutNav {
+    -webkit-transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    border-right: 1px solid rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: inset 2px 0 2px -2px #b2b9c9;
+    .x-list-header {
+      color: transparent;
+      text-shadow: none;
+      font-weight: bold;
+      font-size: 0.8em;
+      text-shadow: none;
+  }
+}
+
+#flyOutNav.transition {
+    -webkit-transition: width 100ms;
+}
+
+#flyOutNav {
+    .x-list-item {
+      min-width: 250px;
+      // color:#fff;
+    }
+}
+
+.x-button .x-button-icon.x-icon-mask.list {
+  -webkit-mask-image: url('../images/list.png');
+}
+
+.x-button .x-button-icon.x-icon-mask.home {
+  -webkit-mask-image: url('../images/home.png');
+}
+
+.listIcn.star{
+    -webkit-mask-image: url('../images/star.png');
+  }
+
+.listIcn.download{
+    -webkit-mask-image: url('../images/download.png');
+  }
+
+.listIcn.doc2 {
+    -webkit-mask-image: url('../images/doc2.png');
+  }
+
+.listIcn.user {
+    -webkit-mask-image: url('../images/user.png');
+  }
+
+  .listIcn.library {
+    -webkit-mask-image: url('../images/library.png');
+  }
+
+.listIcn.home {
+    -webkit-mask-image: url('../images/home.png');
+  }
+
+.listIcn.help {
+    -webkit-mask-image: url('../images/help.png');
+  }
+
+.listIcn.feedback {
+    -webkit-mask-image: url('../images/chat1.png');
+  }
+
+.listIcn.comms {
+    -webkit-mask-image: url('../images/chat.png');
+  }
+.listIcn.logout {
+    -webkit-mask-image: url('../images/eject.png');
+  }
+.listIcn.about {
+    -webkit-mask-image: url('../images/compass2.png');
+  }
+
+.listIcn{
+    width: 1.3em;
+    display: block;
+    background-color: rgb(7, 7, 7);
+    height: 1.3em;
+    -webkit-mask-size: 1.3em;
+    margin-right: 0.5em;
+    vertical-align: -15%;
+    float: left;
+    margin-top: -0.1em;
+    margin-left: -0.3em
+  }
+
+
+
+/*#########################################
+    Home Screen Icons & Text formatting
+#########################################*/
+.dashboardBtn {
+    margin: 7%;
+    border-radius: 78% !important;
+    width: 100px;
+    height: 100px;
+}
+
+.dashboardBtn .x-button-label{
+    white-space: normal !important;
+    color: transparent;
+}
+
+.dashboardBtn .x-button-icon.x-icon-mask{
+    width: 2.1em;
+    height: 2.16em;
+    -webkit-mask-size: 2.1em;
+}
+
+.x-button .x-button-icon.x-icon-mask.library {
+    -webkit-mask-image: url('../images/library.png');
+}
+.x-button .x-button-icon.x-icon-mask.download {
+    -webkit-mask-image: url('../images/download.png');
+}
+.x-button .x-button-icon.x-icon-mask.user {
+    -webkit-mask-image: url('../images/user.png');
+}
+.x-button .x-button-icon.x-icon-mask.star {
+    -webkit-mask-image: url('../images/star.png');
+}
+
+.mainPageTitle{
+    padding-top: 10px;
+    font-size: 2.1em;
+    line-height: 60px;
+    letter-spacing: -1px;
+    color: #444;
+    padding-left: 10px;
+    img{
+          width:80px;
+          height:80px;
+          vertical-align: middle;
+          margin-right: 5px;
+    }
+}
+.homePageTitle{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 25px;
+  text-align: center;
+  padding-top: 5%;
+  text-shadow: #fff 0 1px 1px;
+  color: #333;
+  font-weight: bold;
+}
+
+.homePageLabel{
+  font-weight: 400;
+  text-align: center;
+  position:absolute;
+
+  &.left1 {
+    top: 130px;
+    left: 48px;
+    @media screen and (min-width: 768px) {
+      top: 75%;
+      left: 30%;
+    }
+    @media screen and (min-width: 1024px) {
+      top: 72%;
+      left: 34%;
+    }
+  }
+  &.left2 {
+    top: 300px;
+    left: 49px;
+    @media screen and (min-width: 768px) {
+      top: 198%;
+      left: 31%;
+    }
+    @media screen and (min-width: 1024px) {
+      top: 186%;
+      left: 34%;
+    }
+  }
+  &.right1 {
+    top: 130px;
+    left: 195px;
+    @media screen and (min-width: 768px) {
+      top: 75%;
+      left: 51%;
+    }
+    @media screen and (min-width: 1024px) {
+      top: 72%;
+      left: 51%;
+    }
+  }
+  &.right2 {
+    top: 300px;
+    left: 208px;
+    @media screen and (min-width: 768px) {
+      top: 198%;
+      left: 60%;
+    }
+    @media screen and (min-width: 1024px) {
+      top: 186%;
+      left: 59%;
+    }
+  }
+}
+
+
+.x-panel.x-floating, .x-msgbox, .x-form.x-floating {
+  max-height: 14em;
+  max-width: 14em;
+  }
+
+
+.floatingToolbar {
+  background-color: #eeeeee !important;
+  background-image: none !important;
+  border-color: #eeeeee !important;
+  border: none !important;
+}
+
+
+/*#########################################
+        About Page
+#########################################*/
+#supportView p {
+    font-size: 14px;
+    line-height: 20px;
+    color: #444;
+}
+
+#supportView .preTags {
+    font-size: 14px;
+    text-transform: uppercase;
+    color: #444;
+    text-align: center;
+}
+
+#supportView h4 {
+    font-size: 18px;
+    line-height: 20px;
+    letter-spacing: -1px;color: #444;;
+}
+
+#supportView h1 {
+    font-size: 28px;
+    line-height: 40px;
+    letter-spacing: -1px;
+    color: #444;
+    text-align: center;
+}
+
+
+
+.hiddenToolbar{
+  background-color: #f7f7f7 !important;
+  background-image: none !important;
+  border-color: #f7f7f7 !important;
+
+  .x-title{
+    display:none;
+  }
+
+}
+
+/*#########################################
+        List Icons
+#########################################*/
+
+.listTrash{
+  background: url('../images/trash.png') no-repeat scroll center center;
+  width: 40px;
+  display: inline-block;
+  height: 40px;
+
+  vertical-align: middle;
+  margin-top: -0.1em;
+  z-index:9000;
+
+}
+
+.downloadIcon{
+  background: url('../images/download.png') no-repeat;
+  background-size: 100%;
+  width: 30px;
+  display: inline-block;
+  height: 30px;
+  float:right;
+  margin-right:10px;
+  vertical-align: middle;
+  margin-top: -0.1em;
+  z-index:9000;
+}
+
+
+.favourite{
+  background: url('../images/star-selected.png') no-repeat scroll center center;
+  width: 40px;
+  display: inline-block;
+  height: 40px;
+  vertical-align: middle;
+  z-index:9000;
+}
+
+.listStarBookmark{
+  background: url("../images/star-unselected.png") no-repeat scroll center center;
+  width: 40px;
+  display: inline-block;
+  height: 40px;
+
+  vertical-align: middle;
+
+
+  z-index:9000;
+}

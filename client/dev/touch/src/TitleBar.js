@@ -18,10 +18,12 @@
  *         items: [
  *             {
  *                 iconCls: 'add',
+ *                 iconMask: true,
  *                 align: 'left'
  *             },
  *             {
  *                 iconCls: 'home',
+ *                 iconMask: true,
  *                 align: 'right'
  *             }
  *         ]
@@ -44,6 +46,7 @@
  *             },
  *             {
  *                 iconCls: 'home',
+ *                 iconMask: true,
  *                 align: 'right'
  *             }
  *         ]
@@ -123,12 +126,7 @@ Ext.define('Ext.TitleBar', {
          */
         defaultType: 'button',
 
-        /**
-         * @cfg {String} minHeight
-         * The minimum height height of the Toolbar.
-         * @accessor
-         */
-        minHeight: null,
+        height: '2.6em',
 
         /**
          * @cfg
@@ -150,13 +148,17 @@ Ext.define('Ext.TitleBar', {
         items: []
     },
 
-    hasCSSMinHeight: true,
-
     /**
      * The max button width in this toolbar
      * @private
      */
     maxButtonWidth: '40%',
+
+    constructor: function() {
+        this.refreshTitlePosition = Ext.Function.createThrottled(this.refreshTitlePosition, 50, this);
+
+        this.callParent(arguments);
+    },
 
     beforeInitialize: function() {
         this.applyItems = this.applyInitialItems;
@@ -236,21 +238,21 @@ Ext.define('Ext.TitleBar', {
         }
     },
 
-    doBoxRemove: function(item, destroy) {
+    doBoxRemove: function(item) {
         if (item.config.align == 'right') {
-            this.rightBox.remove(item, destroy);
+            this.rightBox.remove(item);
         }
         else {
-            this.leftBox.remove(item, destroy);
+            this.leftBox.remove(item);
         }
     },
 
     doBoxInsert: function(index, item) {
         if (item.config.align == 'right') {
-            this.rightBox.insert(index, item);
+            this.rightBox.add(item);
         }
         else {
-            this.leftBox.insert(index, item);
+            this.leftBox.add(item);
         }
     },
 

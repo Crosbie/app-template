@@ -4,16 +4,12 @@
 Ext.define('Ext.scroll.indicator.Abstract', {
     extend: 'Ext.Component',
 
-    requires: [
-        'Ext.TaskQueue'
-    ],
-
     config: {
         baseCls: 'x-scroll-indicator',
 
         axis: 'x',
 
-        value: null,
+        value: 0,
 
         length: null,
 
@@ -46,7 +42,7 @@ Ext.define('Ext.scroll.indicator.Abstract', {
     },
 
     applyRatio: function(ratio) {
-        if (isNaN(ratio) || ratio > 1) {
+        if (isNaN(ratio)) {
             ratio = 1;
         }
 
@@ -80,27 +76,7 @@ Ext.define('Ext.scroll.indicator.Abstract', {
     },
 
     updateValue: function(value) {
-        var barLength = this.barLength,
-            gapLength = this.gapLength,
-            length = this.getLength(),
-            newLength, offset, extra;
-
-        if (value <= 0) {
-            offset = 0;
-            this.updateLength(this.applyLength(length + value * barLength));
-        }
-        else if (value >= 1) {
-            extra = Math.round((value - 1) * barLength);
-            newLength = this.applyLength(length - extra);
-            extra = length - newLength;
-            this.updateLength(newLength);
-            offset = gapLength + extra;
-        }
-        else {
-            offset = gapLength * value;
-        }
-
-        this.setOffset(offset);
+        this.setOffset(this.gapLength * value);
     },
 
     updateActive: function(active) {
@@ -108,12 +84,13 @@ Ext.define('Ext.scroll.indicator.Abstract', {
     },
 
     doSetHidden: function(hidden) {
+        var elementDomStyle = this.element.dom.style;
+
         if (hidden) {
-            this.setOffset(-10000);
-        } else {
-            delete this.lastLength;
-            delete this.lastOffset;
-            this.updateValue(this.getValue());
+            elementDomStyle.opacity = '0';
+        }
+        else {
+            elementDomStyle.opacity = '';
         }
     },
 
@@ -122,15 +99,6 @@ Ext.define('Ext.scroll.indicator.Abstract', {
     },
 
     updateLength: function(length) {
-        length = Math.round(length);
-        if (this.lastLength === length) {
-            return;
-        }
-        this.lastLength = length;
-        Ext.TaskQueue.requestWrite('doUpdateLength', this, [length]);
-    },
-
-    doUpdateLength: function(length){
         if (!this.isDestroyed) {
             var axis = this.getAxis(),
                 element = this.element;
@@ -145,25 +113,14 @@ Ext.define('Ext.scroll.indicator.Abstract', {
     },
 
     setOffset: function(offset) {
-        offset = Math.round(offset);
-        if (this.lastOffset === offset || this.lastOffset === -10000) {
-            return;
+        var axis = this.getAxis(),
+            element = this.element;
+
+        if (axis === 'x') {
+            element.setLeft(offset);
         }
-        this.lastOffset = offset;
-        Ext.TaskQueue.requestWrite('doSetOffset', this,[offset]);
-    },
-
-    doSetOffset: function(offset) {
-        if (!this.isDestroyed) {
-            var axis = this.getAxis(),
-                element = this.element;
-
-            if (axis === 'x') {
-                element.translate(offset, 0);
-            }
-            else {
-                element.translate(0, offset);
-            }
+        else {
+            element.setTop(offset);
         }
     }
 });

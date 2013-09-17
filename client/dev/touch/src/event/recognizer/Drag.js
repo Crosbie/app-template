@@ -1,4 +1,6 @@
 /**
+ * A simple event recognizer which knows when you drag.
+ *
  * @private
  */
 Ext.define('Ext.event.recognizer.Drag', {
@@ -14,216 +16,135 @@ Ext.define('Ext.event.recognizer.Drag', {
 
     handledEvents: ['dragstart', 'drag', 'dragend'],
 
-    config: {
-        /**
-         * @cfg {Number} minDistance
-         * The minimum distance of pixels before a touch event becomes a drag event.
-         */
-        minDistance: 8
-    },
+    /**
+     * @member Ext.dom.Element
+     * @event dragstart
+     * Fired once when a drag has started.
+     * @param {Ext.event.Event} event The {@link Ext.event.Event} event encapsulating the DOM event.
+     * @param {HTMLElement} node The target of the event.
+     * @param {Object} options The options object passed to Ext.mixin.Observable.addListener.
+     */
 
-    constructor: function() {
-        this.callSuper(arguments);
+    /**
+     * @member Ext.dom.Element
+     * @event drag
+     * Fires continuously when there is dragging (the touch must move for this to be fired).
+     * @param {Ext.event.Event} event The {@link Ext.event.Event} event encapsulating the DOM event.
+     * @param {HTMLElement} node The target of the event.
+     * @param {Object} options The options object passed to Ext.mixin.Observable.addListener.
+     */
 
-        this.info = {
-            touch: null,
-            previous: {
-                x: 0,
-                y: 0
-            },
-            x: 0,
-            y: 0,
-            delta: {
-                x: 0,
-                y: 0
-            },
-            absDelta: {
-                x: 0,
-                y: 0
-            },
-            flick: {
-                velocity: {
-                    x: 0,
-                    y: 0
-                }
-            },
-            direction: {
-                x: 0,
-                y: 0
-            },
-            time: 0,
-            previousTime: {
-                x: 0,
-                y: 0
-            }
-        };
-    },
+    /**
+     * @member Ext.dom.Element
+     * @event dragend
+     * Fires when a drag has ended.
+     * @param {Ext.event.Event} event The {@link Ext.event.Event} event encapsulating the DOM event.
+     * @param {HTMLElement} node The target of the event.
+     * @param {Object} options The options object passed to Ext.mixin.Observable.addListener.
+     */
 
     onTouchStart: function(e) {
-        if (this.callSuper(arguments) === false) {
+        var startTouches,
+            startTouch;
+
+        if (this.callParent(arguments) === false) {
             if (this.isStarted && this.lastMoveEvent !== null) {
                 this.onTouchEnd(this.lastMoveEvent);
             }
             return false;
         }
 
-        this.startTime = e.time;
-        this.startPoint = e.changedTouches[0].point;
-    },
-
-    tryDragStart: function(e) {
-        var startPoint = this.startPoint,
-            touches = e.changedTouches,
-            touch = touches[0],
-            point = touch.point,
-            minDistance = this.getMinDistance(),
-            info = this.info;
-
-        if (Math.abs(point.getDistanceTo(startPoint)) >= minDistance) {
-            this.isStarted = true;
-
-            this.previousPoint = this.lastPoint = point;
-
-            this.resetInfo('x', e, touch);
-            this.resetInfo('y', e, touch);
-
-            info.time = e.time;
-
-            this.fire('dragstart', e, touches, info);
-        }
+        this.startTouches = startTouches = e.changedTouches;
+        this.startTouch = startTouch = startTouches[0];
+        this.startPoint = startTouch.point;
     },
 
     onTouchMove: function(e) {
-        if (!this.isStarted) {
-            this.tryDragStart(e);
-        }
-
-        if (!this.isStarted) {
-            return;
-        }
-
         var touches = e.changedTouches,
             touch = touches[0],
-            point = touch.point;
+            point = touch.point,
+            time = e.time;
 
         if (this.lastPoint) {
             this.previousPoint = this.lastPoint;
         }
 
+        if (this.lastTime) {
+            this.previousTime = this.lastTime;
+        }
+
+        this.lastTime = time;
         this.lastPoint = point;
         this.lastMoveEvent = e;
 
-        this.updateInfo('x', e, touch, true);
-        this.updateInfo('y', e, touch, true);
+        if (!this.isStarted) {
+            this.isStarted = true;
 
-        this.info.time = e.time;
+            this.startTime = time;
+            this.previousTime = time;
 
-        this.fire('drag', e, touches, this.info);
-    },
+            this.previousPoint = this.startPoint;
 
-    onAxisDragEnd: function(axis, info) {
-        var duration = info.time - info.previousTime[axis];
-
-        if (duration > 0) {
-            info.flick.velocity[axis] = (info[axis] - info.previous[axis]) / duration;
+            this.fire('dragstart', e, this.startTouches, this.getInfo(e, this.startTouch));
         }
-    },
-
-    resetInfo: function(axis, e, touch) {
-        var value = this.lastPoint[axis],
-            startValue = this.startPoint[axis],
-            delta = value - startValue,
-            capAxis = axis.toUpperCase(),
-            info = this.info;
-
-        info.touch = touch;
-
-        info.delta[axis] = delta;
-        info.absDelta[axis] = Math.abs(delta);
-
-        info.previousTime[axis] = this.startTime;
-        info.previous[axis] = startValue;
-        info[axis] = value;
-        info.direction[axis] = 0;
-
-        info['start' + capAxis] = this.startPoint[axis];
-        info['previous' + capAxis] = info.previous[axis];
-        info['page' + capAxis] = info[axis];
-        info['delta' + capAxis] = info.delta[axis];
-        info['absDelta' + capAxis] = info.absDelta[axis];
-        info['previousDelta' + capAxis] = 0;
-        info.startTime = this.startTime;
-    },
-
-    updateInfo: function(axis, e, touch, updatePrevious) {
-        var time = e.time,
-            value = this.lastPoint[axis],
-            previousValue = this.previousPoint[axis],
-            startValue = this.startPoint[axis],
-            delta = value - startValue,
-            info = this.info,
-            direction = info.direction,
-            capAxis = axis.toUpperCase(),
-            previousFlick = info.previous[axis],
-            previousDelta;
-
-        info.touch = touch;
-
-        previousDelta = info.delta[axis];
-        info.delta[axis] = delta;
-        info.absDelta[axis] = Math.abs(delta);
-
-        if (updatePrevious && value !== previousFlick && value !== info[axis] && time - info.previousTime[axis] >= 50) {
-            info.previous[axis] = info[axis];
-            info.previousTime[axis] = info.time;
+        else {
+            this.fire('drag', e, touches, this.getInfo(e, touch));
         }
-
-        info[axis] = value;
-
-        if (value > previousValue) {
-            direction[axis] = 1;
-        }
-        else if (value < previousValue) {
-            direction[axis] = -1;
-        }
-
-        info['start' + capAxis] = this.startPoint[axis];
-        info['previous' + capAxis] = info.previous[axis];
-        info['page' + capAxis] = info[axis];
-        info['delta' + capAxis] = info.delta[axis];
-        info['absDelta' + capAxis] = info.absDelta[axis];
-        info['previousDelta' + capAxis] = previousDelta;
-        info.startTime = this.startTime;
     },
 
     onTouchEnd: function(e) {
-        if (!this.isStarted) {
-            this.tryDragStart(e);
-        }
-
         if (this.isStarted) {
             var touches = e.changedTouches,
                 touch = touches[0],
-                point = touch.point,
-                info = this.info;
+                point = touch.point;
 
             this.isStarted = false;
+
             this.lastPoint = point;
 
-            this.updateInfo('x', e, touch);
-            this.updateInfo('y', e, touch);
+            this.fire('dragend', e, touches, this.getInfo(e, touch));
 
-            info.time = e.time;
-
-            this.onAxisDragEnd('x', info);
-            this.onAxisDragEnd('y', info);
-
-            this.fire('dragend', e, touches, info);
+            this.startTime = 0;
+            this.previousTime = 0;
+            this.lastTime = 0;
 
             this.startPoint = null;
             this.previousPoint = null;
             this.lastPoint = null;
             this.lastMoveEvent = null;
         }
+    },
+
+    getInfo: function(e, touch) {
+        var time = e.time,
+            startPoint = this.startPoint,
+            previousPoint = this.previousPoint,
+            startTime = this.startTime,
+            previousTime = this.previousTime,
+            point = this.lastPoint,
+            deltaX = point.x - startPoint.x,
+            deltaY = point.y - startPoint.y,
+            info = {
+                touch: touch,
+                startX: startPoint.x,
+                startY: startPoint.y,
+                previousX: previousPoint.x,
+                previousY: previousPoint.y,
+                pageX: point.x,
+                pageY: point.y,
+                deltaX: deltaX,
+                deltaY: deltaY,
+                absDeltaX: Math.abs(deltaX),
+                absDeltaY: Math.abs(deltaY),
+                previousDeltaX: point.x - previousPoint.x,
+                previousDeltaY: point.y - previousPoint.y,
+                time: time,
+                startTime: startTime,
+                previousTime: previousTime,
+                deltaTime: time - startTime,
+                previousDeltaTime: time - previousTime
+            };
+
+        return info;
     }
 });

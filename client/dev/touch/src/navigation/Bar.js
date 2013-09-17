@@ -126,11 +126,6 @@ Ext.define('Ext.navigation.Bar', {
         }
     },
 
-    platformConfig: [{
-        platform: ['blackberry'],
-        animation: false
-    }],
-
     /**
      * @event back
      * Fires when the back button was tapped.
@@ -185,7 +180,7 @@ Ext.define('Ext.navigation.Bar', {
     updateView: function(newView) {
         var me = this,
             backButton = me.getBackButton(),
-            innerItems, i, backButtonText, item, title, titleText;
+            innerItems, i, backButtonText, item, title;
 
         me.getItems();
 
@@ -199,13 +194,7 @@ Ext.define('Ext.navigation.Bar', {
                 me.backButtonStack.push(title || '&nbsp;');
             }
 
-            titleText = me.getTitleText();
-
-            if (titleText === undefined) {
-                titleText = '';
-            }
-
-            me.setTitle(titleText);
+            me.setTitle(me.getTitleText());
 
             backButtonText = me.getBackButtonText();
             if (backButtonText) {
@@ -265,6 +254,8 @@ Ext.define('Ext.navigation.Bar', {
             properties, leftGhost, titleGhost, leftProps, titleProps;
 
         if (animated) {
+            me.isAnimating = true;
+
             leftGhost = me.createProxy(leftBox.element);
             leftBoxElement.setStyle('opacity', '0');
             backButton.setText(backButtonText);
@@ -278,7 +269,6 @@ Ext.define('Ext.navigation.Bar', {
             leftProps = properties.left;
             titleProps = properties.title;
 
-            me.isAnimating = true;
             me.animate(leftBoxElement, leftProps.element);
             me.animate(titleElement, titleProps.element, function() {
                 titleElement.setLeft(properties.titleLeft);
@@ -286,7 +276,7 @@ Ext.define('Ext.navigation.Bar', {
                 me.refreshTitlePosition();
             });
 
-            if (Ext.browser.is.AndroidStock2 && !this.getAndroid2Transforms()) {
+            if (Ext.os.is.Android2 && !this.getAndroid2Transforms()) {
                 leftGhost.ghost.destroy();
                 titleGhost.ghost.destroy();
             }
@@ -329,7 +319,7 @@ Ext.define('Ext.navigation.Bar', {
             oldLeftX = oldLeft.x,
             oldLeftWidth = oldLeft.width,
             oldLeftLeft = oldLeft.left,
-            useLeft = Ext.browser.is.AndroidStock2 && !this.getAndroid2Transforms(),
+            useLeft = Ext.os.is.Android2 && !this.getAndroid2Transforms(),
             newOffset, oldOffset, leftAnims, titleAnims, omega, theta;
 
         theta = barX - oldLeftX - oldLeftWidth;
@@ -391,7 +381,7 @@ Ext.define('Ext.navigation.Bar', {
         if (reverse) {
             titleElement.setLeft(0);
 
-            oldOffset = barX + barWidth - titleX - titleWidth;
+            oldOffset = barX + barWidth;
 
             if (omega !== undefined) {
                 newOffset = omega;
@@ -401,7 +391,7 @@ Ext.define('Ext.navigation.Bar', {
             }
         }
         else {
-            newOffset = barX + barWidth - titleX - titleWidth;
+            newOffset = barWidth - titleX;
 
             if (omega !== undefined) {
                 oldOffset = omega;
@@ -409,8 +399,6 @@ Ext.define('Ext.navigation.Bar', {
             else {
                 oldOffset = theta;
             }
-
-            newOffset = Math.max(titleLeft, newOffset);
         }
 
         if (useLeft) {

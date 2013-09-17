@@ -5,6 +5,12 @@
 /**
  * Encapsulates a DOM element, adding simple DOM manipulation facilities, normalizing for browser differences.
  *
+ * All instances of this class inherit the methods of Ext.Fx making visual effects easily available to all DOM elements.
+ *
+ * Note that the events documented in this class are not Ext events, they encapsulate browser events. To access the
+ * underlying browser event, see {@link Ext.EventObject#browserEvent}. Some older browsers may not support the full range of
+ * events. Which events are supported is beyond the control of Sencha Touch.
+ *
  * ## Usage
  *
  *     // by id
@@ -146,10 +152,13 @@ Ext.define('Ext.dom.Element', {
         /**
          * Retrieves Ext.dom.Element objects. {@link Ext#get} is alias for {@link Ext.dom.Element#get}.
          *
+         * **This method does not retrieve {@link Ext.Element Element}s.** This method retrieves Ext.dom.Element
+         * objects which encapsulate DOM elements. To retrieve a Element by its ID, use {@link Ext.ElementManager#get}.
+         *
          * Uses simple caching to consistently return the same object. Automatically fixes if an object was recreated with
          * the same id via AJAX or DOM.
          *
-         * @param {String/HTMLElement/Ext.Element} element The `id` of the node, a DOM Node or an existing Element.
+         * @param {String/HTMLElement/Ext.Element} el The `id` of the node, a DOM Node or an existing Element.
          * @return {Ext.dom.Element} The Element object (or `null` if no matching element was found).
          * @static
          * @inheritable
@@ -305,7 +314,7 @@ Ext.define('Ext.dom.Element', {
                 dom.id = id = this.mixins.identifiable.getUniqueId.call(this);
             }
 
-            Ext.Element.cache[id] = this;
+            this.self.cache[id] = this;
         }
 
         return id;
@@ -313,7 +322,7 @@ Ext.define('Ext.dom.Element', {
 
     setId: function(id) {
         var currentId = this.id,
-            cache = Ext.Element.cache;
+            cache = this.self.cache;
 
         if (currentId) {
             delete cache[currentId];
@@ -362,15 +371,10 @@ Ext.define('Ext.dom.Element', {
         domStyle.display = '';
     },
 
-    isPainted: (function() {
-        return !Ext.browser.is.IE ? function() {
-            var dom = this.dom;
-            return Boolean(dom && dom.offsetParent);
-        } : function() {
-            var dom = this.dom;
-            return Boolean(dom && (dom.offsetHeight !== 0 && dom.offsetWidth !== 0));
-        }
-    })(),
+    isPainted: function() {
+        var dom = this.dom;
+        return Boolean(dom && dom.offsetParent);
+    },
 
     /**
      * Sets the passed attributes as attributes of this element (a style attribute can be a string, object or function).
@@ -495,8 +499,8 @@ Ext.define('Ext.dom.Element', {
          * {@link Ext.dom.Element#fly}.
          *
          * Use this to make one-time references to DOM elements which are not going to be accessed again either by
-         * application code, or by Ext's classes. If accessing an element which will be processed regularly, then {@link Ext#get Ext.get}
-         * will be more appropriate to take advantage of the caching provided by the {@link Ext.dom.Element}
+         * application code, or by Ext's classes. If accessing an element which will be processed regularly, then {@link
+         * Ext#get Ext.get} will be more appropriate to take advantage of the caching provided by the {@link Ext.dom.Element}
          * class.
          *
          * @param {String/HTMLElement} element The DOM node or `id`.

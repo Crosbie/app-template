@@ -11,8 +11,7 @@ Ext.define('Ext.device.connection.Sencha', {
      * @param {String} type The new online {@link Ext.device.Connection#getType type}
      */
 
-    constructor: function() {
-        this.callSuper(arguments);
+    initialize: function() {
         Ext.device.Communicator.send({
             command: 'Connection#watch',
             callbacks: {

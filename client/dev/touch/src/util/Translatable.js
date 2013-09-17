@@ -7,20 +7,33 @@
 Ext.define('Ext.util.Translatable', {
     requires: [
         'Ext.util.translatable.CssTransform',
-        'Ext.util.translatable.ScrollPosition',
-        'Ext.util.translatable.CssPosition'
+        'Ext.util.translatable.ScrollPosition'
     ],
 
     constructor: function(config) {
-        var namespace = Ext.util.translatable;
+        var namespace = Ext.util.translatable,
+            CssTransform = namespace.CssTransform,
+            ScrollPosition = namespace.ScrollPosition,
+            classReference;
 
-        switch (Ext.browser.getPreferredTranslationMethod(config)) {
-        case 'scrollposition':
-            return new namespace.ScrollPosition(config);
-        case 'csstransform':
-            return new namespace.CssTransform(config);
-        case 'cssposition':
-            return new namespace.CssPosition(config);
+        if (typeof config == 'object' && 'translationMethod' in config) {
+            if (config.translationMethod === 'scrollposition') {
+                classReference = ScrollPosition;
+            }
+            else if (config.translationMethod === 'csstransform') {
+                classReference = CssTransform;
+            }
         }
+
+        if (!classReference) {
+            if (Ext.os.is.Android2) {
+                classReference = ScrollPosition;
+            }
+            else {
+                classReference = CssTransform;
+            }
+        }
+
+        return new classReference(config);
     }
 });
