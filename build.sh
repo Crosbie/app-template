@@ -3,7 +3,7 @@ cd client/dev
 sencha app build testing
 cd ..
 echo 'deleting default...'
-rm default/*
+rm -R default/*
 cd default
 echo 'deleting resources...'
 rm -R resources/
@@ -19,3 +19,4 @@ cp Icon-72.png ../default
 cp Icon.png ../default
 cp Icon@2x.png ../default
 cp Icon@2x~ipad.png ../default
+cd ../../
