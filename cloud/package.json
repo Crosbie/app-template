@@ -2,6 +2,10 @@
   "name": "template",
   "version": "0.0.1",
   "dependencies" : {
-    "fh-nodeapp": "*"
+    "fh-nodeapp": "*",
+    "mocha": "1.12.0"
+  },
+  "scripts": {
+    "test": "mocha tests/allTests.js --timeout 999000"
   }
 }
